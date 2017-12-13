@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
     // this.importExportService.test();
     //start toolts suite database if it has not started
     if (this.suiteDbService.hasStarted == false) {
-      this.suiteDbService.startup();
+     // this.suiteDbService.startup();
     }
     this.selectedItems = new Array();
     this.showLandingScreen = this.assessmentService.getLandingScreen();
@@ -364,7 +364,7 @@ export class DashboardComponent implements OnInit {
     this.deleting = true;
     this.indexedDbService.deleteDb().then(
       results => {
-        this.suiteDbService.startup();
+       // this.suiteDbService.startup();
         this.ngOnInit();
         this.hideDeleteModal()
       }

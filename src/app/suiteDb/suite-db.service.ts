@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FlueGasMaterial, GasLoadChargeMaterial, LiquidLoadChargeMaterial, SolidLiquidFlueGasMaterial, SolidLoadChargeMaterial, AtmosphereSpecificHeat, WallLossesSurface } from '../shared/models/materials';
 
-//declare var db: any;
+declare var db: any;
 
-var db = require('amo-tools-suite/build/Release/db.node')
+//var db = require('amo-tools-suite/build/Release/db.node')
 @Injectable()
 export class SuiteDbService {
   db: any = db;
