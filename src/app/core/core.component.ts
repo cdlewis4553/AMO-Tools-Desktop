@@ -4,7 +4,7 @@ import { ElectronService } from 'ngx-electron';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { ImportExportService } from '../shared/import-export/import-export.service';
 import { AssessmentService } from '../assessment/assessment.service';
-
+import * as pptx from 'pptxgenjs';
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
@@ -27,6 +27,29 @@ export class CoreComponent implements OnInit {
   }
 
   ngOnInit() {
+    let test = new pptx;
+    let slide = test.addNewSlide()
+     slide.addText(
+       'BONJOUR - CIAO - GUTEN TAG - HELLO - HOLA - NAMASTE - OLÀ - ZDRAS-TVUY-TE - こんにちは - 你好',
+       { x: 0.0, y: 0.25, w: '100%', h: 1.5, align: 'c', font_size: 24, color: '0088CC', fill: 'F1F1F1' }
+     );
+     let saveCallback = (callbackArgs) => {
+      debugger; 
+      console.log(callbackArgs)
+      let tmp = new URL;
+      var blobUrl = tmp.createObjectURL(callbackArgs);
+
+      var link = document.createElement("a"); // Or maybe get it from the current document
+      link.href = blobUrl;
+      link.download = "aDefaultFileName.txt";
+      link.innerHTML = "Click here to download the file";
+      document.body.appendChild(link);
+
+      //let blob = this.importExportService.dataURItoBlob(callbackArgs);
+      
+     }
+     test.save('blob', saveCallback, 'base64');
+    //test.save('Node_Demo', function(filename){ debugger; console.log('Created: '+filename); });
     this.electronService.ipcRenderer.once('available', (event, arg) => {
       if (arg == true) {
         this.showUpdateModal = true;

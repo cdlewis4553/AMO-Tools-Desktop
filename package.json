@@ -57,6 +57,7 @@
     "jquery": "^3.2.1",
     "ngx-electron": "1.0.2",
     "popper.js": "^1.12.3",
+    "pptxgenjs": "^2.0.0",
     "regression": "^2.0.0",
     "rxjs": "5.5.2",
     "ts-helpers": "^1.1.1",

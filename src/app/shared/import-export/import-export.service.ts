@@ -68,12 +68,12 @@ export class ImportExportService {
     let doc = this.windowRefService.getDoc();
     var blob = this.dataURItoBlob(dataUrl);
     var fd = new FormData();
-    fd.append("file", blob, "screenshot.png");
+    fd.append("file", blob, "screenshot.ppt");
   }
 
   dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    // doesn't handle URLEncoded DataURIs
     var byteString = atob(dataURI.split(',')[1]);
 
     // separate out the mime component
