@@ -37,7 +37,7 @@ export class PhastReportComponent implements OnInit {
 
   ngOnInit() {
     this.createdDate = new Date();
-    if(this.settings){
+    if (this.settings) {
       if (!this.settings.energyResultUnit) {
         this.settings = this.settingsService.setEnergyResultUnitSetting(this.settings);
       }
@@ -113,12 +113,14 @@ export class PhastReportComponent implements OnInit {
   }
 
   print() {
-    // let win = this.windowRefService.nativeWindow;
-    // let doc = this.windowRefService.getDoc();
-    // win.print();
-    this.powerpointBuilderService.init();
-    this.powerpointBuilderService.addSlide();
-    this.powerpointBuilderService.save();
+    let win = this.windowRefService.nativeWindow;
+    let doc = this.windowRefService.getDoc();
+    win.print();
+  }
 
+  powerpoint() {
+    this.powerpointBuilderService.init();
+    this.powerpointBuilderService.addSlide('tableTest');
+    this.powerpointBuilderService.save();
   }
 }
