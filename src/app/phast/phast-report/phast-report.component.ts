@@ -8,6 +8,7 @@ import { Directory } from '../../shared/models/directory';
 import { ReportRollupService } from '../../report-rollup/report-rollup.service';
 import { WindowRefService } from '../../indexedDb/window-ref.service';
 import { SettingsService } from '../../settings/settings.service';
+import { PowerpointBuilderService } from '../../shared/powerpoint-builder.service';
 
 @Component({
   selector: 'app-phast-report',
@@ -32,7 +33,7 @@ export class PhastReportComponent implements OnInit {
   currentTab: string = 'energy-used';
   assessmentDirectories: Array<Directory>;
   createdDate: Date;
-  constructor(private phastService: PhastService, private indexedDbService: IndexedDbService, private reportRollupService: ReportRollupService, private windowRefService: WindowRefService, private settingsService: SettingsService) { }
+  constructor(private powerpointBuilderService: PowerpointBuilderService, private phastService: PhastService, private indexedDbService: IndexedDbService, private reportRollupService: ReportRollupService, private windowRefService: WindowRefService, private settingsService: SettingsService) { }
 
   ngOnInit() {
     this.createdDate = new Date();
@@ -112,8 +113,12 @@ export class PhastReportComponent implements OnInit {
   }
 
   print() {
-    let win = this.windowRefService.nativeWindow;
-    let doc = this.windowRefService.getDoc();
-    win.print();
+    // let win = this.windowRefService.nativeWindow;
+    // let doc = this.windowRefService.getDoc();
+    // win.print();
+    this.powerpointBuilderService.init();
+    this.powerpointBuilderService.addSlide();
+    this.powerpointBuilderService.save();
+
   }
 }

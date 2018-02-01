@@ -11,6 +11,7 @@ import { ConvertUnitsService } from './convert-units/convert-units.service';
 import { PercentGraphComponent } from './percent-graph/percent-graph.component';
 import { SigFigsPipe } from './sig-figs.pipe';
 import { UpdateDataService } from './update-data.service';
+import { PowerpointBuilderService } from './powerpoint-builder.service';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { UpdateDataService } from './update-data.service';
     ValidationService,
     ModelService,
     ConvertUnitsService,
-    UpdateDataService
+    UpdateDataService,
+    PowerpointBuilderService
   ]
 })
 
