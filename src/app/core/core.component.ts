@@ -29,26 +29,41 @@ export class CoreComponent implements OnInit {
   ngOnInit() {
     let test = new pptx;
     let slide = test.addNewSlide()
-     slide.addText(
-       'BONJOUR - CIAO - GUTEN TAG - HELLO - HOLA - NAMASTE - OLÀ - ZDRAS-TVUY-TE - こんにちは - 你好',
-       { x: 0.0, y: 0.25, w: '100%', h: 1.5, align: 'c', font_size: 24, color: '0088CC', fill: 'F1F1F1' }
-     );
-     let saveCallback = (callbackArgs) => {
-      debugger; 
-      console.log(callbackArgs)
-      let tmp = new URL;
-      var blobUrl = tmp.createObjectURL(callbackArgs);
+    slide.addText(
+      'BONJOUR - CIAO - GUTEN TAG - HELLO - HOLA - NAMASTE - OLÀ - ZDRAS-TVUY-TE - こんにちは - 你好',
+      { x: 0.0, y: 0.25, w: '100%', h: 1.5, align: 'c', font_size: 24, color: '0088CC', fill: 'F1F1F1' }
+    );
 
+  //  slide = test.addNewSlide();
+
+    // Chart Type: BAR
+    // var dataChartBar = [
+    //   {
+    //     name: 'Region 1',
+    //     labels: ['May', 'June', 'July', 'August'],
+    //     values: [26, 53, 100, 75]
+    //   },
+    //   {
+    //     name: 'Region 2',
+    //     labels: ['May', 'June', 'July', 'August'],
+    //     values: [43.5, 70.3, 90.1, 80.05]
+    //   }
+    // ];
+    // slide.addChart(test.charts.BAR, dataChartBar, { x: 1.0, y: 1.0, w: 12, h: 6 });
+
+    let saveCallback = (callbackArgs) => {
+      var blobUrl = window.URL.createObjectURL(callbackArgs);
       var link = document.createElement("a"); // Or maybe get it from the current document
       link.href = blobUrl;
-      link.download = "aDefaultFileName.txt";
+      link.download = "aDefaultFileName.ppt";
       link.innerHTML = "Click here to download the file";
       document.body.appendChild(link);
-
+      link.click();
+      window.URL.revokeObjectURL(blobUrl);
       //let blob = this.importExportService.dataURItoBlob(callbackArgs);
-      
-     }
-     test.save('blob', saveCallback, 'base64');
+
+    }
+    test.save('jszip', saveCallback, 'blob');
     //test.save('Node_Demo', function(filename){ debugger; console.log('Created: '+filename); });
     this.electronService.ipcRenderer.once('available', (event, arg) => {
       if (arg == true) {
