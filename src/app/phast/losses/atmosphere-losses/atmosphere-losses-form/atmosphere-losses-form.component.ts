@@ -29,6 +29,8 @@ export class AtmosphereLossesFormComponent implements OnInit {
   lossIndex: number;
   @Input()
   settings: Settings;
+  @Output('inputError')
+  inputError = new EventEmitter<boolean>();
 
   @ViewChild('materialModal') public materialModal: ModalDirective;
   firstChange: boolean = true;
@@ -55,6 +57,8 @@ export class AtmosphereLossesFormComponent implements OnInit {
   ngOnInit() {
     this.materialTypes = this.suiteDbService.selectAtmosphereSpecificHeat();
     this.checkTempError(true);
+    this.checkCorrectionError(true);
+    this.checkInputErrors();
   }
 
   ngAfterViewInit() {
@@ -67,7 +71,7 @@ export class AtmosphereLossesFormComponent implements OnInit {
   setProperties() {
     let selectedMaterial = this.suiteDbService.selectAtmosphereSpecificHeatById(this.atmosphereLossForm.controls.atmosphereGas.value);
     if (this.settings.unitsOfMeasure == 'Metric') {
-      selectedMaterial.specificHeat = this.convertUnitsService.value(selectedMaterial.specificHeat,).from('btulbF').to('kJkgC');
+      selectedMaterial.specificHeat = this.convertUnitsService.value(selectedMaterial.specificHeat, ).from('btulbF').to('kJkgC');
     }
 
     this.atmosphereLossForm.patchValue({
@@ -115,6 +119,14 @@ export class AtmosphereLossesFormComponent implements OnInit {
     }
   }
 
+  checkInputErrors(){
+    if(this.temperatureError || this.specificHeatError || this.flowRateError){
+      this.inputError.emit(true);
+    }else{
+      this.inputError.emit(false);
+    }
+  }
+
   focusField(str: string) {
     this.changeField.emit(str);
   }
@@ -126,13 +138,9 @@ export class AtmosphereLossesFormComponent implements OnInit {
   }
 
   startSavePolling() {
+    this.checkInputErrors();
     this.calculate.emit(true);
-    if (this.counter) {
-      clearTimeout(this.counter);
-    }
-    this.counter = setTimeout(() => {
-      this.emitSave();
-    }, 3000)
+    this.emitSave();
   }
 
   initDifferenceMonitor() {
@@ -151,7 +159,7 @@ export class AtmosphereLossesFormComponent implements OnInit {
         this.atmosphereLossesCompareService.differentArray[this.lossIndex].different.specificHeat.subscribe((val) => {
           let specificHeatElements = doc.getElementsByName('specificHeat_' + this.lossIndex);
           specificHeatElements.forEach(element => {
-            element.classList.toggle('indicate-different', val);
+            element.classList.toggle('indicate-different-db', val);
           });
         })
         //inletTemp

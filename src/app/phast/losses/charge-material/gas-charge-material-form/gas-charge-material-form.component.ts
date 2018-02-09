@@ -28,6 +28,9 @@ export class GasChargeMaterialFormComponent implements OnInit {
   lossIndex: number;
   @Input()
   settings: Settings;
+  @Output('inputError')
+  inputError = new EventEmitter<boolean>();
+
   @ViewChild('materialModal') public materialModal: ModalDirective;
   firstChange: boolean = true;
   materialTypes: any;
@@ -64,6 +67,7 @@ export class GasChargeMaterialFormComponent implements OnInit {
         }
       }
     }
+    this.checkInputError(true);
   }
 
   ngAfterViewInit() {
@@ -145,16 +149,17 @@ export class GasChargeMaterialFormComponent implements OnInit {
     } else {
       this.heatOfReactionError = null;
     }
+
+    if(this.specificHeatGasError || this.feedGasRateError || this.gasMixVaporError || this.specificHeatGasVaporError || this.feedGasReactedError || this.heatOfReactionError){
+      this.inputError.emit(true);
+    }else{
+      this.inputError.emit(false);
+    }
   }
 
   startSavePolling() {
     this.calculate.emit(true);
-    if (this.counter) {
-      clearTimeout(this.counter);
-    }
-    this.counter = setTimeout(() => {
-      this.emitSave();
-    }, 3000)
+    this.emitSave();
   }
 
   initDifferenceMonitor() {
@@ -173,7 +178,7 @@ export class GasChargeMaterialFormComponent implements OnInit {
         this.chargeMaterialCompareService.differentArray[this.lossIndex].different.gasChargeMaterialDifferent.specificHeatGas.subscribe((val) => {
           let materialSpecificHeatElements = doc.getElementsByName('materialSpecificHeat_' + this.lossIndex);
           materialSpecificHeatElements.forEach(element => {
-            element.classList.toggle('indicate-different', val);
+            element.classList.toggle('indicate-different-db', val);
           });
         })
         //feedRate

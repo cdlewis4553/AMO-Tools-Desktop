@@ -12,6 +12,7 @@ import { PercentGraphComponent } from './percent-graph/percent-graph.component';
 import { SigFigsPipe } from './sig-figs.pipe';
 import { UpdateDataService } from './update-data.service';
 import { PowerpointBuilderService } from './powerpoint-builder.service';
+import { FacilityInfoSummaryComponent } from './facility-info-summary/facility-info-summary.component';
 
 @NgModule({
   imports: [
@@ -23,12 +24,14 @@ import { PowerpointBuilderService } from './powerpoint-builder.service';
   declarations: [
     ControlMessagesComponent,
     PercentGraphComponent,
-    SigFigsPipe
+    SigFigsPipe,
+    FacilityInfoSummaryComponent
   ],
   exports: [
     ControlMessagesComponent,
     PercentGraphComponent,
-    SigFigsPipe
+    SigFigsPipe,
+    FacilityInfoSummaryComponent
   ],
   providers: [
     ValidationService,
