@@ -1,15 +1,33 @@
 import { Injectable } from '@angular/core';
 import * as pptx from 'pptxgenjs';
+import * as docx from 'docxtemplater';
 @Injectable()
 export class PowerpointBuilderService {
 
 
   pptx: any;
   slide: any;
+  docx: any;
   constructor() { }
 
   init() {
     this.pptx = new pptx;
+  }
+
+  initDocX(){
+    this.docx = new docx;
+    debugger
+    console.log(this.docx);
+    // docx.setData({
+    //   first_name: 'Mark',
+    //   last_name: 'Root'
+    // })
+    // docx.render();
+    // let out = docx.getZip().generate({
+    //   type:"blob",
+    //   mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    // })
+    // console.log(out);
   }
 
 

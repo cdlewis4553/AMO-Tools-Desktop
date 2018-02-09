@@ -5,6 +5,9 @@ import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty
 import { ImportExportService } from '../shared/import-export/import-export.service';
 import { AssessmentService } from '../assessment/assessment.service';
 import * as pptx from 'pptxgenjs';
+import * as docx from 'docxtemplater';
+import { PowerpointBuilderService } from '../shared/powerpoint-builder.service';
+
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
@@ -21,12 +24,15 @@ export class CoreComponent implements OnInit {
 
   showScreenshot: boolean = true;
   constructor(private electronService: ElectronService, private toastyService: ToastyService,
-    private toastyConfig: ToastyConfig, private importExportService: ImportExportService, private assessmentService: AssessmentService, private changeDetectorRef: ChangeDetectorRef) {
+    private toastyConfig: ToastyConfig, private importExportService: ImportExportService, private assessmentService: AssessmentService, private changeDetectorRef: ChangeDetectorRef,
+  private pptService: PowerpointBuilderService) {
     this.toastyConfig.theme = 'bootstrap';
     this.toastyConfig.limit = 1;
   }
 
   ngOnInit() {
+    this.pptService.initDocX();
+    // console.log(docx);
     //send signal to main.js to check for update
     this.electronService.ipcRenderer.send('ready', null);
 
