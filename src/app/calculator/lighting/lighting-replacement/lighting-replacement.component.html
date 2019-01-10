@@ -25,6 +25,8 @@
               <app-lighting-replacement-form [data]="data" (emitCalculate)="calculate()" (emitFocusField)="focusField($event)"></app-lighting-replacement-form>
             </div>
             <div class="w-100 justify-content-center btn-group btn-group-sm">
+              <button type="button" class="btn btn-primary pull-right btn-sm btn-margin-1-" (click)="showSaveCalcModal()">Save
+                to Folder</button>
               <button type="button" class="btn btn-danger pull-right btn-sm btn-margin-10" (click)="btnResetData()">
                 Reset Data
               </button>
@@ -88,6 +90,54 @@
             <app-lighting-replacement-help *ngIf="tabSelect == 'help'" [currentField]="currentField"></app-lighting-replacement-help>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #saveCalcModal="bs-modal" class="modal fade hide-print" tabindex="-1" role="dialog" aria-labelledby="saveCalcModalLabel"
+  aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-md hide-print">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Save Calculator to Folder</h3>
+        <button class="close" (click)="closeSaveCalcModal(true)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="saveCalcForm">
+          <div class="d-flex flex-column">
+            <div class="input-group">
+              <label for="name">File Name</label>
+              <input id="name" name="name" class="form-control" formControlName="name" type="text" onfocus="this.select();">
+            </div>
+
+            <!-- <div class="input-group">
+              <label for="selectedDirectory">Selected Folder</label>
+              <select id="selectedDirectory" name="selectedDirectory" class="form-control" formControlName="selectedDirectory"
+                type="number">
+                <option *ngFor="let dir of root.directory.subDirectory" [ngValue]="dir.id">{{dir.name}}</option>
+              </select>
+            </div> -->
+
+            <div class="d-flex flex-column folder-tree folder-tree-root p-2">
+              <app-folder-explorer [root]="root" [padding]="0"></app-folder-explorer>
+              <!-- <div class="d-flex w-100" (click)="openOrCloseDirectory(rootDir.id)">
+                {{rootDir.name}}
+              </div>
+              <div class="d-flex flex-column w-100" *ngFor="let openDir of openDirs">
+                <div class="d-flex w-100" *ngFor="let subDir of openDir.subDirectory" (click)="openOrCloseDirectory(subDir.id)"
+                  [ngStyle]="{padding: getPadding(subDir, 0)}">
+                  {{subDir.name}}
+                </div>
+
+              </div> -->
+            </div>
+
+          </div>
+        </form>
       </div>
     </div>
   </div>

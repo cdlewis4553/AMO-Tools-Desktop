@@ -22,6 +22,7 @@ import { LineChartHelperService } from './line-chart-helper/line-chart-helper.se
 import { ExportableTableComponent } from './exportable-table/exportable-table.component';
 import { TabsTooltipComponent } from './tabs-tooltip/tabs-tooltip.component';
 import { PrintOptionsMenuComponent } from './print-options-menu/print-options-menu.component';
+import { FolderExplorerComponent } from './folder-explorer/folder-explorer.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { PrintOptionsMenuComponent } from './print-options-menu/print-options-me
     SimpleTooltipComponent,
     ExportableTableComponent,
     TabsTooltipComponent,
-    PrintOptionsMenuComponent
+    PrintOptionsMenuComponent,
+    FolderExplorerComponent
   ],
   exports: [
     ControlMessagesComponent,
@@ -56,7 +58,8 @@ import { PrintOptionsMenuComponent } from './print-options-menu/print-options-me
     SimpleTooltipComponent,
     ExportableTableComponent,
     TabsTooltipComponent,
-    PrintOptionsMenuComponent
+    PrintOptionsMenuComponent,
+    FolderExplorerComponent
   ],
   providers: [
     ValidationService,

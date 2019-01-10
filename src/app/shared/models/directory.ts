@@ -23,3 +23,8 @@ export interface DirectoryDbRef {
   createdDate?: Date;
   modifiedDate?: Date;
 }
+
+export interface DirectoryTreeItem {
+  directory: Directory,
+  expanded: boolean
+}

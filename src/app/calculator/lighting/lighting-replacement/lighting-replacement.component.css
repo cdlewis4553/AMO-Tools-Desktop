@@ -23,3 +23,10 @@
 .btn-margin-10 {
     margin: 10px 0px;
 }
+
+
+.folder-tree-root {
+    border: 1px solid #aaa;
+    color: #555;
+    /* background-color: pink; */
+}

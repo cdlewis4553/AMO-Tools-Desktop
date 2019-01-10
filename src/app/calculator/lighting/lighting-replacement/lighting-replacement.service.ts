@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { Directory } from '../../../shared/models/directory';
+import { DirectoryDbService } from '../../../indexedDb/directory-db.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Injectable()
 export class LightingReplacementService {
 
   baselineData: Array<LightingReplacementData>;
   modificationData: Array<LightingReplacementData>;
-  constructor() { }
+  constructor(private directoryDbService: DirectoryDbService, private formBuilder: FormBuilder) { }
 
   calculate(data: LightingReplacementData): LightingReplacementData {
     data = this.calculateOperatingHours(data);
@@ -38,6 +41,42 @@ export class LightingReplacementService {
     }
     return tmpResults;
   }
+
+  getRootDir(): Directory {
+    let rootDir: Directory = this.directoryDbService.getById(1);
+    return rootDir;
+  }
+  
+
+  getDirectoryList(allDirectories: Directory): Array<Directory> {
+    let directories: Array<Directory> = new Array<Directory>();
+
+
+
+    return directories;
+  }
+
+  initForm(): FormGroup {
+    let tmpForm: FormGroup = this.formBuilder.group({
+      selectedDirectory: [1, Validators.required],
+      name: ['', Validators.required]
+    });
+    return tmpForm;
+  }
+
+  getDirectoryArrayFromParentId(id: number): Array<Directory> {
+    let parentDir = this.directoryDbService.getById(id);
+    if (parentDir === undefined || parentDir === null) {
+      return null;
+    }
+    return parentDir.subDirectory;
+  }
+
+  getDirectoryById(id: number): Directory {
+    return this.directoryDbService.getById(id);
+  }
+
+
 }
 
 export interface LightingReplacementData {
