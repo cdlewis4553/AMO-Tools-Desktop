@@ -47,6 +47,7 @@ export class LightingReplacementComponent implements OnInit {
 
   saveCalcForm: FormGroup;
   root: DirectoryTreeItem;
+  selectedDir: DirectoryTreeItem;
   openDirs: Array<Directory>;
   @ViewChild('saveCalcModal') public saveCalcModal: ModalDirective;
 
@@ -57,6 +58,7 @@ export class LightingReplacementComponent implements OnInit {
       directory: this.lightingReplacementService.getRootDir(),
       expanded: true
     };
+    this.selectedDir = this.root;
     this.saveCalcForm = this.lightingReplacementService.initForm();
     
     if (this.settingsDbService.globalSettings.defaultPanelTab) {
@@ -249,6 +251,10 @@ export class LightingReplacementComponent implements OnInit {
       console.log(this.openDirs);
       // if (tmpDir)
     }
+  }
+
+  selectDir(dir: DirectoryTreeItem) {
+    this.selectedDir = dir;
   }
 }
 

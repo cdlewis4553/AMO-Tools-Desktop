@@ -110,7 +110,8 @@
         <form [formGroup]="saveCalcForm">
           <div class="d-flex flex-column">
             <div class="input-group">
-              <label for="name">File Name</label>
+                <label for="name">{{selectedDir.directory.name}}</label>
+                <!-- <label for="name">File Name</label> -->
               <input id="name" name="name" class="form-control" formControlName="name" type="text" onfocus="this.select();">
             </div>
 
@@ -123,7 +124,7 @@
             </div> -->
 
             <div class="d-flex flex-column folder-tree folder-tree-root p-2">
-              <app-folder-explorer [root]="root" [padding]="0"></app-folder-explorer>
+              <app-folder-explorer [root]="root" [padding]="0" [inceptionLevel]="0" (emitSelectedDirectory)="selectDir($event)"></app-folder-explorer>
               <!-- <div class="d-flex w-100" (click)="openOrCloseDirectory(rootDir.id)">
                 {{rootDir.name}}
               </div>

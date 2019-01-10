@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DirectoryTreeItem } from '../models/directory';
 
 @Component({
@@ -11,6 +11,11 @@ export class FolderExplorerComponent implements OnInit {
   root: DirectoryTreeItem;
   @Input()
   padding: number;
+  @Input()
+  inceptionLevel: number;
+  @Output('emitSelectedDirectory')
+  emitSelectedDirectory = new EventEmitter<DirectoryTreeItem>();
+
 
 
   subList: Array<DirectoryTreeItem>;
@@ -43,11 +48,25 @@ export class FolderExplorerComponent implements OnInit {
     return "0px 0px 0px " + (this.padding + 10) + "px";
   }
 
-  expandDir(directoryTreeItem: DirectoryTreeItem, i: number) {
-    this.subList[i] = {
-      directory: directoryTreeItem.directory,
-      expanded: true
+  expandDir(directoryTreeItem: DirectoryTreeItem, i: number) {    
+    //collapse if already expanded
+    if (this.subList[i].expanded) {
+      this.subList[i] = {
+        directory: directoryTreeItem.directory,
+        expanded: false
+      };
     }
+    //expand if collapsed when clicked
+    else {
+      this.subList[i] = {
+        directory: directoryTreeItem.directory,
+        expanded: true
+      }
+    }
+  }
+
+  selectDir(directoryTreeItem: DirectoryTreeItem) {
+    this.emitSelectedDirectory.emit(directoryTreeItem);
   }
 
 }
