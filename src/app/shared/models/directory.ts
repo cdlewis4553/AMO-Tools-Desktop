@@ -26,5 +26,6 @@ export interface DirectoryDbRef {
 
 export interface DirectoryTreeItem {
   directory: Directory,
-  expanded: boolean
+  expanded: boolean,
+  selected: boolean
 }

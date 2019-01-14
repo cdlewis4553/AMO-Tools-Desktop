@@ -56,7 +56,8 @@ export class LightingReplacementComponent implements OnInit {
   ngOnInit() {    
     this.root = {
       directory: this.lightingReplacementService.getRootDir(),
-      expanded: true
+      expanded: true,
+      selected: true
     };
     this.selectedDir = this.root;
     this.saveCalcForm = this.lightingReplacementService.initForm();
@@ -255,6 +256,8 @@ export class LightingReplacementComponent implements OnInit {
 
   selectDir(dir: DirectoryTreeItem) {
     this.selectedDir = dir;
+    console.log('selected dir = ');
+    console.log(dir.directory.name);
   }
 }
 

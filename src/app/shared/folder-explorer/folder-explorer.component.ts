@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { DirectoryTreeItem } from '../models/directory';
 
 @Component({
@@ -17,10 +17,9 @@ export class FolderExplorerComponent implements OnInit {
   emitSelectedDirectory = new EventEmitter<DirectoryTreeItem>();
 
 
-
   subList: Array<DirectoryTreeItem>;
 
-  constructor() { }
+  constructor(private renderer: Renderer2) { }
 
   ngOnInit() {
     this.createDirectoryTreeList();
@@ -33,7 +32,8 @@ export class FolderExplorerComponent implements OnInit {
       for (let i = 0; i < this.root.directory.subDirectory.length; i++) {
         let dirItem = {
           directory: this.root.directory.subDirectory[i],
-          expanded: false
+          expanded: false,
+          selected: false
         }
         this.subList.push(dirItem);
       }
@@ -48,24 +48,59 @@ export class FolderExplorerComponent implements OnInit {
     return "0px 0px 0px " + (this.padding + 10) + "px";
   }
 
-  expandDir(directoryTreeItem: DirectoryTreeItem, i: number) {    
+
+  expandDir(directoryTreeItem: DirectoryTreeItem) {
     //collapse if already expanded
-    if (this.subList[i].expanded) {
-      this.subList[i] = {
-        directory: directoryTreeItem.directory,
-        expanded: false
-      };
-    }
-    //expand if collapsed when clicked
-    else {
-      this.subList[i] = {
-        directory: directoryTreeItem.directory,
-        expanded: true
+    if (this.root.expanded) {
+      this.root = {
+        directory: this.root.directory,
+        expanded: false,
+        selected: this.root.selected
       }
     }
+    else {
+      this.root = {
+        directory: this.root.directory,
+        expanded: true,
+        selected: this.root.selected
+      }
+    }
+
   }
 
+  // expandDir(directoryTreeItem: DirectoryTreeItem, i: number) {    
+  //   //collapse if already expanded
+  //   if (this.subList[i].expanded) {
+  //     this.subList[i] = {
+  //       directory: directoryTreeItem.directory,
+  //       expanded: false,
+  //       selected: this.subList[i].selected
+  //     };
+  //   }
+  //   //expand if collapsed when clicked
+  //   else {
+  //     this.subList[i] = {
+  //       directory: directoryTreeItem.directory,
+  //       expanded: true,
+  //       selected: this.subList[i].selected
+  //     }
+  //   }
+  // }
+
   selectDir(directoryTreeItem: DirectoryTreeItem) {
+    directoryTreeItem = {
+      directory: directoryTreeItem.directory,
+      expanded: directoryTreeItem.expanded,
+      selected: true
+    }
+    if (this.root.directory !== directoryTreeItem.directory) {
+      this.root.selected = false;
+    }
+    else {
+      this.root.selected = true;
+    }
+    console.log('selectedDirectoryTreeItem = ');
+    console.log(directoryTreeItem);
     this.emitSelectedDirectory.emit(directoryTreeItem);
   }
 

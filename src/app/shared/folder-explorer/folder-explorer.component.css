@@ -22,3 +22,10 @@
     /* Non-prefixed version, currently
         supported by Chrome and Opera */
 }
+
+/* .directory-tree-item .selected { */
+
+.selected {
+    background-color: #0069d9 !important;
+    color: #fff;
+}
