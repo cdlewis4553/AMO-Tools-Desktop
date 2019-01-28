@@ -1,35 +1,13 @@
 <div class="d-flex flex-column w-100">
-
-  <!-- <div class="d-flex w-100 noselect" [ngClass]="{'selected' : root.selected}" *ngIf="inceptionLevel === 0" [ngStyle]="{padding: getPaddingString()}"> -->
   <div class="d-flex w-100 noselect directory-tree-item" [ngClass]="{'selected' : root.selected}" [ngStyle]="{padding: getPaddingString()}"
     (click)="selectDir(root)" (dblclick)="expandDir(root)">
-    <i class="fa fa-folder-open icon-align" *ngIf="root.expanded"></i>
-    <i class="fa fa-folder icon-align" *ngIf="!root.expanded"></i>
-    {{root.directory.name}}
+    <i class="p-1 fa fa-folder-open icon-align" *ngIf="root.expanded"></i>
+    <i class="p-1 fa fa-folder icon-align" *ngIf="!root.expanded"></i>
+    <span class="p-1">{{root.directory.name}}</span>
   </div>
-
   <div *ngIf="root.expanded">
     <div class="d-flex flex-column w-100" *ngFor="let subDir of subList; let i = index">
       <app-folder-explorer [root]="subDir" [padding]="padding + 10" [inceptionLevel]="inceptionLevel + 1" [selectedDirectoryId]="selectedDirectoryId" (emitUpdateDirectoryId)="updateSelectedId($event)"></app-folder-explorer>
-
-      <!-- <app-folder-explorer [root]="subDir" [padding]="padding + 10" [inceptionLevel]="inceptionLevel + 1"
-        (emitSelectedDirectory)="selectDir($event)"></app-folder-explorer> -->
     </div>
   </div>
-
-
-
-  <!-- <div class="d-flex flex-column w-100" *ngFor="let subDir of subList; let i = index" [ngStyle]="{padding: getSubPaddingString()}">
-    <div #directoryElement [ngClass]="{'d-flex w-100 noselect directory-tree-item selected' : subDir.selected, 'd-flex w-100 noselect directory-tree-item' : !subDir.selected}"
-      (dblclick)="expandDir(subDir, i)" (click)="selectDir(subDir)">
-      <i class="fa fa-folder-open icon-align" *ngIf="subDir.expanded"></i>
-      <i class="fa fa-folder icon-align" *ngIf="!subDir.expanded"></i>
-      {{subDir.directory.name}}
-    </div>
-    <div class="d-flex" *ngIf="subDir.expanded">
-      <app-folder-explorer [root]="subDir" [padding]="padding + 10" [inceptionLevel]="inceptionLevel + 1"
-        (emitSelectedDirectory)="selectDir($event)"></app-folder-explorer>
-    </div>
-  </div> -->
-
 </div>

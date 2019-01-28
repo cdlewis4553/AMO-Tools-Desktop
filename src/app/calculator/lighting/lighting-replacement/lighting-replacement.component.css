@@ -1,13 +1,12 @@
-.header .fa.fa-lightbulb-o{
+.header .fa.fa-lightbulb-o {
     font-size: -webkit-xxx-large;
 }
 
-
-.fa.fa-times-circle-o:hover{
+.fa.fa-times-circle-o:hover {
     cursor: pointer;
 }
 
-.no-data{
+.no-data {
     background: none;
 }
 
@@ -24,9 +23,13 @@
     margin: 10px 0px;
 }
 
+.folder-tree {
+    max-height: 300px;
+    overflow: auto;
+    background-color: rgb(246, 247, 255);
+}
 
 .folder-tree-root {
     border: 1px solid #aaa;
     color: #555;
-    /* background-color: pink; */
 }

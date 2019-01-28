@@ -47,7 +47,8 @@ export class LightingReplacementComponent implements OnInit {
 
   saveCalcForm: FormGroup;
   root: DirectoryTreeItem;
-  selectedDir: DirectoryTreeItem;
+  // selectedDir: DirectoryTreeItem;
+  selectedDir: Directory;
   openDirs: Array<Directory>;
   @ViewChild('saveCalcModal') public saveCalcModal: ModalDirective;
 
@@ -59,7 +60,7 @@ export class LightingReplacementComponent implements OnInit {
       expanded: true,
       selected: true
     };
-    this.selectedDir = this.root;
+    this.selectedDir = this.root.directory;
     this.saveCalcForm = this.lightingReplacementService.initForm();
     
     if (this.settingsDbService.globalSettings.defaultPanelTab) {
@@ -196,7 +197,6 @@ export class LightingReplacementComponent implements OnInit {
     this.currentField = str;
   }
 
-
   showSaveCalcModal(): void {
     this.saveCalcModal.show();
   }
@@ -205,86 +205,7 @@ export class LightingReplacementComponent implements OnInit {
     this.saveCalcModal.hide();
   }
 
-  getPadding(dir: Directory, padding: number) {
-    if (dir.parentDirectoryId !== null && dir.parentDirectoryId !== undefined) {
-      console.log('')
-      let tmpDir = this.lightingReplacementService.getDirectoryById(dir.parentDirectoryId);
-      return this.getPadding(tmpDir, padding + 10);
-    }
-    else {
-      console.log('returning padding = ' + padding);
-      return "0px 0px 0px " + padding + "px";
-    }
-    
-  }
-
-  closeDirectory(dir: Directory) {
-
-    // console.log('closing directory = ');
-    // console.log(dir);
-    if (dir.subDirectory !== undefined && dir.subDirectory !== null && dir.subDirectory.length > 0) {
-      for (let i = 0; i < dir.subDirectory.length; i++) {
-        let check = _.includes(this.openDirs, dir.subDirectory[i]);
-        if (check) {
-          this.closeDirectory(dir.subDirectory[i]);
-        }
-      }
-    }
-    // console.log('index of ' + dir.name + ' = ');
-    let index = _.indexOf(this.openDirs, dir);
-    // console.log(index);
-    this.openDirs.splice(index);
-  }
-
-  openOrCloseDirectory(id: number) {
-    let tmpDir = this.lightingReplacementService.getDirectoryById(id);
-    console.log('tmpDir = ');
-    console.log(tmpDir);
-    let check = _.includes(this.openDirs, tmpDir);
-    if (!check) {
-      this.openDirs.push(tmpDir);
-    }
-    else {
-      console.log('openDirs before closing = ');
-      console.log(this.openDirs);
-      this.closeDirectory(tmpDir);
-      console.log('openDirs AFTER closing = ');
-      console.log(this.openDirs);
-      // if (tmpDir)
-    }
-  }
-
-  selectDir(dir: DirectoryTreeItem) {
-    this.selectedDir = dir;
-    console.log('selected dir = ');
-    console.log(dir.directory.name);
+  selectDir(id: number) {
+    this.selectedDir = this.lightingReplacementService.getDirectoryById(id);
   }
 }
-
-
-// [
-//   rootDir,
-//   [
-//     child0, 
-//     [
-//       grandChild00,
-//       [],
-//       grandChild01,
-//       [],
-//     ],
-//     child1, 
-//     [
-//       grandchild10,
-//       [],
-//       grandchild11,
-//       [
-//         greatgrandchild110,
-//         [],
-//         greatgrandchild111,
-//         [],
-//       ],
-//     ],
-//     child2,
-//     [],
-//   ],
-// ]

@@ -24,17 +24,20 @@
                 <span *ngIf="baselineData.length != 1" class="fa fa-times-circle-o pull-right large" (click)="removeBaselineFixture(index)"></span></label>
               <app-lighting-replacement-form [data]="data" (emitCalculate)="calculate()" (emitFocusField)="focusField($event)"></app-lighting-replacement-form>
             </div>
-            <div class="w-100 justify-content-center btn-group btn-group-sm">
-              <button type="button" class="btn btn-primary pull-right btn-sm btn-margin-1-" (click)="showSaveCalcModal()">Save
-                to Folder</button>
-              <button type="button" class="btn btn-danger pull-right btn-sm btn-margin-10" (click)="btnResetData()">
-                Reset Data
-              </button>
+            <div class="w-100 justify-content-center">
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-danger pull-right btn-sm m-2" (click)="btnResetData()">
+                  Reset Data
+                </button>
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-primary pull-left btn-sm m-2" (click)="showSaveCalcModal()">Save
+                  to Folder
+                </button>
+              </div>
             </div>
-
           </div>
         </div>
-
 
         <!-- Modifications Start -->
         <div *ngIf="modificationExists" class="w-50">
@@ -109,36 +112,26 @@
       <div class="modal-body">
         <form [formGroup]="saveCalcForm">
           <div class="d-flex flex-column">
-            <div class="input-group">
-                <label for="name">{{selectedDir.directory.name}}</label>
-                <!-- <label for="name">File Name</label> -->
-              <input id="name" name="name" class="form-control" formControlName="name" type="text" onfocus="this.select();">
+            <div class="p-2">
+              Selected Directory: 
+              <span class="text-info">{{selectedDir.name}}</span>
             </div>
-
-            <!-- <div class="input-group">
-              <label for="selectedDirectory">Selected Folder</label>
-              <select id="selectedDirectory" name="selectedDirectory" class="form-control" formControlName="selectedDirectory"
-                type="number">
-                <option *ngFor="let dir of root.directory.subDirectory" [ngValue]="dir.id">{{dir.name}}</option>
-              </select>
-            </div> -->
 
             <div class="d-flex flex-column folder-tree folder-tree-root p-2">
-              <app-folder-explorer [root]="root" [padding]="0" [inceptionLevel]="0" (emitSelectedDirectory)="selectDir($event)"></app-folder-explorer>
-              <!-- <div class="d-flex w-100" (click)="openOrCloseDirectory(rootDir.id)">
-                {{rootDir.name}}
-              </div>
-              <div class="d-flex flex-column w-100" *ngFor="let openDir of openDirs">
-                <div class="d-flex w-100" *ngFor="let subDir of openDir.subDirectory" (click)="openOrCloseDirectory(subDir.id)"
-                  [ngStyle]="{padding: getPadding(subDir, 0)}">
-                  {{subDir.name}}
-                </div>
-
-              </div> -->
+              <app-folder-explorer [root]="root" [padding]="0" [inceptionLevel]="0" (emitUpdateDirectoryId)="selectDir($event)"></app-folder-explorer>
             </div>
-
           </div>
         </form>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex flex-row">
+          <div class="px-2 btn-group btn-group-sm">
+            <button type="button" class="btn btn-sm btn-primary">Save</button>
+          </div>
+          <div class="px-2 btn-group btn-group-sm">
+            <button type="button" class="btn btn-sm btn-danger" (click)="closeSaveCalcModal(true)">Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
