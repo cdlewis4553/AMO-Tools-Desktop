@@ -1,7 +1,8 @@
 <div class="d-flex flex-column w-100">
 
   <!-- <div class="d-flex w-100 noselect" [ngClass]="{'selected' : root.selected}" *ngIf="inceptionLevel === 0" [ngStyle]="{padding: getPaddingString()}"> -->
-  <div class="d-flex w-100 noselect directory-tree-item" [ngClass]="{'selected' : root.selected}" [ngStyle]="{padding: getPaddingString()}" (click)="selectDir(root)" (dblclick)="expandDir(root)">
+  <div class="d-flex w-100 noselect directory-tree-item" [ngClass]="{'selected' : root.selected}" [ngStyle]="{padding: getPaddingString()}"
+    (click)="selectDir(root)" (dblclick)="expandDir(root)">
     <i class="fa fa-folder-open icon-align" *ngIf="root.expanded"></i>
     <i class="fa fa-folder icon-align" *ngIf="!root.expanded"></i>
     {{root.directory.name}}
@@ -9,8 +10,10 @@
 
   <div *ngIf="root.expanded">
     <div class="d-flex flex-column w-100" *ngFor="let subDir of subList; let i = index">
-      <app-folder-explorer [root]="subDir" [padding]="padding + 10" [inceptionLevel]="inceptionLevel + 1"
-        (emitSelectedDirectory)="selectDir($event)"></app-folder-explorer>
+      <app-folder-explorer [root]="subDir" [padding]="padding + 10" [inceptionLevel]="inceptionLevel + 1" [selectedDirectoryId]="selectedDirectoryId" (emitUpdateDirectoryId)="updateSelectedId($event)"></app-folder-explorer>
+
+      <!-- <app-folder-explorer [root]="subDir" [padding]="padding + 10" [inceptionLevel]="inceptionLevel + 1"
+        (emitSelectedDirectory)="selectDir($event)"></app-folder-explorer> -->
     </div>
   </div>
 

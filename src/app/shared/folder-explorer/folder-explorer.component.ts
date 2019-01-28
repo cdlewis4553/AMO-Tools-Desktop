@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, Renderer2, SimpleChanges } from '@angular/core';
 import { DirectoryTreeItem } from '../models/directory';
 
 @Component({
@@ -13,17 +13,34 @@ export class FolderExplorerComponent implements OnInit {
   padding: number;
   @Input()
   inceptionLevel: number;
-  @Output('emitSelectedDirectory')
-  emitSelectedDirectory = new EventEmitter<DirectoryTreeItem>();
-
+  @Input()
+  selectedDirectoryId: number;
+  // @Output('emitSelectedDirectory')
+  // emitSelectedDirectory = new EventEmitter<DirectoryTreeItem>();
+  // @Output('emitDeselectDirectory')
+  // emitDeselectDirectory = new EventEmitter<boolean>();
+  @Output('emitUpdateDirectoryId')
+  emitUpdateDirectoryId = new EventEmitter<number>();
 
   subList: Array<DirectoryTreeItem>;
 
   constructor(private renderer: Renderer2) { }
 
-  ngOnInit() {
+  ngOnInit() {  
+    console.log(this.root.directory.id);
     this.createDirectoryTreeList();
+  }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.root && !changes.root.firstChange) {
+      console.log('changes to root');
+    }
+    if (changes.selectedDirectoryId && !changes.selectedDirectoryId.firstChange) {
+      console.log('changes to selected dir id');
+      console.log('root = ' + this.root.directory.name);
+      // this.deselectDirectories();
+      // this.emitUpdateDirectoryId.emit(this.selectedDirectoryId);
+    }
   }
 
   createDirectoryTreeList() {
@@ -87,21 +104,92 @@ export class FolderExplorerComponent implements OnInit {
   //   }
   // }
 
+  // selectDir(directoryTreeItem: DirectoryTreeItem) {
+  //   directoryTreeItem = {
+  //     directory: directoryTreeItem.directory,
+  //     expanded: directoryTreeItem.expanded,
+  //     selected: true
+  //   }
+  //   if (this.root.directory !== directoryTreeItem.directory) {
+  //     console.log('DIFFERENT');
+  //     // this.root.selected = false;
+  //     this.root = {
+  //       directory: this.root.directory,
+  //       expanded: this.root.expanded,
+  //       selected: false
+  //     };
+  //     for (let i = 0; i < this.subList.length; i++) {
+  //       if (this.subList[i].directory !== directoryTreeItem.directory) {
+  //         this.subList[i] = {
+  //           directory: this.subList[i].directory,
+  //           expanded: this.subList[i].expanded,
+  //           selected: false
+  //         };
+  //       }
+  //     }
+  //   }
+  //   else {
+  //     console.log('SAME');
+  //     this.root = {
+  //       directory: this.root.directory,
+  //       expanded: this.root.expanded,
+  //       selected: true
+  //     };
+  //     for (let i = 0; i < this.subList.length; i++) {
+  //       this.subList[i] = {
+  //         directory: this.subList[i].directory,
+  //         expanded: this.subList[i].expanded,
+  //         selected: false
+  //       };
+  //     }
+  //   }
+  //   console.log('selectedDirectoryTreeItem = ');
+  //   console.log(directoryTreeItem);
+  //   this.emitSelectedDirectory.emit(directoryTreeItem);
+  // }
+
   selectDir(directoryTreeItem: DirectoryTreeItem) {
-    directoryTreeItem = {
+    this.root = {
       directory: directoryTreeItem.directory,
       expanded: directoryTreeItem.expanded,
       selected: true
     }
-    if (this.root.directory !== directoryTreeItem.directory) {
-      this.root.selected = false;
+    this.selectedDirectoryId = this.root.directory.id;
+    // for (let i = 0; i < this.subList.length; i++) {
+    //   this.subList[i] = {
+    //     directory: this.subList[i].directory,
+    //     expanded: this.subList[i].expanded,
+    //     selected: false
+    //   };
+    // }
+
+    this.emitUpdateDirectoryId.emit(this.selectedDirectoryId);
+  }
+
+  updateSelectedId(id: number) {
+    this.selectedDirectoryId = id;
+    this.deselectDirectories();
+  }
+
+  deselectDirectories() {
+    if (this.root.directory.id !== this.selectedDirectoryId) {
+      this.root = {
+        directory: this.root.directory,
+        expanded: this.root.expanded,
+        selected: false
+      };
     }
-    else {
-      this.root.selected = true;
-    }
-    console.log('selectedDirectoryTreeItem = ');
-    console.log(directoryTreeItem);
-    this.emitSelectedDirectory.emit(directoryTreeItem);
+    this.emitUpdateDirectoryId.emit(this.selectedDirectoryId);
+
+    // for (let i = 0; i < this.subList.length; i++) {
+    //   if (this.subList[i].directory.id !== this.selectedDirectoryId) {
+    //     this.subList[i] = {
+    //       directory: this.subList[i].directory,
+    //       expanded: this.subList[i].expanded,
+    //       selected: false
+    //     };
+    //   }
+    // }
   }
 
 }
