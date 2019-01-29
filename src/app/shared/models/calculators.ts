@@ -7,6 +7,7 @@ import { EnergyEquivalencyFuel, EnergyEquivalencyElectric } from "./phast/energy
 import { FlowCalculations } from "./phast/flowCalculations";
 import { FanEfficiencyInputs } from "../../calculator/fans/fan-efficiency/fan-efficiency.service";
 import { Fan203Inputs } from "./fans";
+import { LightingReplacement } from "../../calculator/lighting/lighting-replacement";
 
 export interface Calculator {
     directoryId?: number,
@@ -15,6 +16,7 @@ export interface Calculator {
     name?: string,
     type?: string,
     preAssessments?: Array<PreAssessment>,
+    lightingReplacements?: Array<LightingReplacement>,
     headTool?: HeadTool,
     headToolSuction?: HeadToolSuction,
     headToolType?: string,

@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import { Directory } from '../../../shared/models/directory';
 import { DirectoryDbService } from '../../../indexedDb/directory-db.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { LightingReplacementData } from '../lighting-replacement';
+import { LightingReplacementResults } from '../lighting-replacement';
 
 @Injectable()
 export class LightingReplacementService {
@@ -42,20 +44,20 @@ export class LightingReplacementService {
     return tmpResults;
   }
 
+  //gets root directory
   getRootDir(): Directory {
     let rootDir: Directory = this.directoryDbService.getById(1);
     return rootDir;
   }
   
 
+  //ignore
   getDirectoryList(allDirectories: Directory): Array<Directory> {
     let directories: Array<Directory> = new Array<Directory>();
-
-
-
     return directories;
   }
 
+  //inits form for saving via file-tree browser
   initForm(): FormGroup {
     let tmpForm: FormGroup = this.formBuilder.group({
       selectedDirectory: [1, Validators.required],
@@ -77,24 +79,6 @@ export class LightingReplacementService {
   }
 
 
-}
-
-export interface LightingReplacementData {
-  hoursPerDay?: number,
-  daysPerMonth?: number,
-  monthsPerYear?: number,
-  hoursPerYear?: number,
-  wattsPerLamp?: number,
-  lampsPerFixture?: number,
-  numberOfFixtures?: number,
-  lumensPerLamp?: number,
-  totalLighting?: number,
-  electricityUse?: number
-}
 
 
-export interface LightingReplacementResults {
-  totalElectricityUse: number;
-  totalLighting: number;
-  totalOperatingHours: number;
 }

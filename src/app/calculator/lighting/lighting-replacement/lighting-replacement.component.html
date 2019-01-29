@@ -113,10 +113,13 @@
         <form [formGroup]="saveCalcForm">
           <div class="d-flex flex-column">
             <div class="p-2">
-              Selected Directory: 
-              <span class="text-info">{{selectedDir.name}}</span>
+              Name:
+              <input type="text" formControlName="name" id="name" class="pull-right">
             </div>
-
+            <div class="p-2">
+              Selected Directory: 
+              <span class="text-info pull-right">{{selectedDir.name}}</span>
+            </div>
             <div class="d-flex flex-column folder-tree folder-tree-root p-2">
               <app-folder-explorer [root]="root" [padding]="0" [inceptionLevel]="0" (emitUpdateDirectoryId)="selectDir($event)"></app-folder-explorer>
             </div>
