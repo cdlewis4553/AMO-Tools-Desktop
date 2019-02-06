@@ -21,6 +21,9 @@ export class CashFlowDiagramComponent implements OnInit {
   @Input()
   cashFlowForm: CashFlowForm;
 
+  @ViewChild('copyTable') copyTable: ElementRef;
+  tableString: any;
+
   @ViewChild("ngChartContainer") ngChartContainer: ElementRef;
   @ViewChild("ngChart") ngChart: ElementRef;
   @HostListener('window:resize', ['$event'])
@@ -116,6 +119,10 @@ export class CashFlowDiagramComponent implements OnInit {
     } else {
       this.firstChange = false;
     }
+  }
+
+  updateTableString() {
+    this.tableString = this.copyTable.nativeElement.innerText;
   }
 
   // ========== export/gridline tooltip functions ==========
@@ -375,4 +382,12 @@ export class CashFlowDiagramComponent implements OnInit {
     }, 200);
   }
   //========== end chart resize functions ==========
+  @HostListener('document:keyup', ['$event'])
+  closeExpandedGraph(event) {
+    if (this.expanded) {
+      if (event.code == 'Escape') {
+        this.contractChart();
+      }
+    }
+  }
 }

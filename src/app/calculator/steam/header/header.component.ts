@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { HeaderOutput, HeaderInput, HeaderInputObj } from '../../../shared/models/steam';
+import { HeaderInput } from '../../../shared/models/steam/steam-inputs';
 import { FormGroup } from '../../../../../node_modules/@angular/forms';
 import { SettingsDbService } from '../../../indexedDb/settings-db.service';
 import { SteamService } from '../steam.service';
 import { HeaderService } from './header.service';
 import { Settings } from '../../../shared/models/settings';
+import { HeaderOutput } from '../../../shared/models/steam/steam-outputs';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-header-calculator',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -28,6 +29,18 @@ export class HeaderComponent implements OnInit {
   results: HeaderOutput;
   numInletOptions: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   inletThermoQuantity: number = 0;
+
+  //enable functionality for exportable result tables
+  table0String: any;
+  table1String: any;
+  table2String: any;
+  table3String: any;
+  table4String: any;
+  table5String: any;
+  table6String: any;
+  table7String: any;
+  table8String: any;
+
   constructor(private settingsDbService: SettingsDbService, private steamService: SteamService, private headerService: HeaderService) { }
 
   ngOnInit() {
@@ -44,6 +57,10 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       this.resizeTabs();
     }, 50);
+  }
+
+  ngOnDestroy(){
+    this.headerService.headerInput = this.input;
   }
 
   btnResetData() {
@@ -130,7 +147,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet1: {
         energyFlow: 0,
@@ -139,7 +157,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet2: {
         energyFlow: 0,
@@ -148,7 +167,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet3: {
         energyFlow: 0,
@@ -157,7 +177,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet4: {
         energyFlow: 0,
@@ -166,7 +187,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet5: {
         energyFlow: 0,
@@ -175,7 +197,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet6: {
         energyFlow: 0,
@@ -184,7 +207,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet7: {
         energyFlow: 0,
@@ -193,7 +217,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet8: {
         energyFlow: 0,
@@ -202,7 +227,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       },
       inlet9: {
         energyFlow: 0,
@@ -211,7 +237,8 @@ export class HeaderComponent implements OnInit {
         quality: 0,
         specificEnthalpy: 0,
         specificEntropy: 0,
-        temperature: 0
+        temperature: 0,
+        specificVolume: 0
       }
     }
 

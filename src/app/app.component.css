@@ -362,6 +362,11 @@ select.form-control:not([size]):not([multiple]) {
   color: #007bff  !important;
 }
 
+.ssmt .indicate-report-field-different {
+  font-weight: bold;
+  color: #F39C12  !important;
+}
+
 
 .input-error{
   color: red;
@@ -1091,8 +1096,16 @@ Calculators
   border-radius: 15px;
   border: 0.1px solid rgba(123, 120, 120, 0.25);
   box-shadow: #7b7878 2px 2px 5px 1px;
+  background: linear-gradient(rgba(228, 219, 219, 0.34), #FC5B00);
 }
-
+.ico-size.steam {
+  height: 55px;
+  /*background-color: rgba(41, 128, 185, 0);*/
+  border-radius: 15px;
+  border: 0.1px solid rgba(123, 120, 120, 0.25);
+  box-shadow: #7b7878 2px 2px 5px 1px;
+  background: linear-gradient(rgba(228, 219, 219, 0.34), #FC5B00);
+}
 .psat .ico-size{
   background: linear-gradient(rgba(228, 219, 219, 0.34), rgba(30, 144, 255, 0.26));
 }
@@ -1127,6 +1140,14 @@ Calculators
   border: 0.1px solid rgba(123, 120, 120, 0.25);
   box-shadow: #7b7878 2px 2px 5px 1px;
 }
+.ico-size4.steam {
+  height: 55px;
+  /*background-color: rgba(41, 128, 185, 0);*/
+  border-radius: 15px;
+  border: 0.1px solid rgba(123, 120, 120, 0.25);
+  box-shadow: #7b7878 2px 2px 5px 1px;
+  background: linear-gradient(rgba(228, 219, 219, 0.34), #FC5B00);
+}
 
 .ico-size5 {
   height: 55px;
@@ -1139,6 +1160,24 @@ Calculators
 
 .fan-icon {
   background: linear-gradient(rgba(228, 219, 219, 0.34), #FFE400);
+  /*background-color: rgba(41, 128, 185, 0);*/
+  border-radius: 15px;
+  border: 0.1px solid rgba(123, 120, 120, 0.25);
+  box-shadow: #7b7878 2px 2px 5px 1px;
+  width: 85px;
+  height: 75px;
+}
+.lighting-bulb {
+  height: 55px;
+  width: 55px;
+  border-radius: 15px;
+  border: 0.1px solid rgba(123, 120, 120, 0.25);
+  box-shadow: #7b7878 2px 2px 5px 1px;
+  background: linear-gradient(rgba(228, 219, 219, 0.34), rgba(0, 123, 255, 0.34));
+}
+
+.ssmt-icon {
+  background: linear-gradient(rgba(228, 219, 219, 0.34), #F39C12);
   /*background-color: rgba(41, 128, 185, 0);*/
   border-radius: 15px;
   border: 0.1px solid rgba(123, 120, 120, 0.25);
@@ -1299,8 +1338,17 @@ Banner
     background: #FFE400;
   }
 
+  .banner.ssmt{
+    background:#F39C12;
+    color: black;
+  }
+
   .banner.fsat .btn-dashboard, .banner.fsat .title, 
   .banner.fsat .settings, .banner.fsat h1, .banner.fsat small{
+    color: #000;
+  }
+  .banner.ssmt .btn-dashboard, .banner.ssmt .title, 
+  .banner.ssmt .settings, .banner.ssmt h1, .banner.ssmt small{
     color: #000;
   }
 .banner:after {
@@ -1407,12 +1455,6 @@ Modify Conditions
   -moz-box-shadow: 0px 0px 69px -1px rgba(0,0,0,0.2);
   box-shadow: 0px 0px 69px -1px rgba(0,0,0,0.2);
   z-index: 2;
-}
-.converter-col {
-  height: 100%;
-}
-.converter-content {
-  padding-top: 4%;
 }
 
   .modification.disabled, .modification.disabled button, .modification.disabled textarea {

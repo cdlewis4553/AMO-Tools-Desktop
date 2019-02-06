@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, SimpleChanges, HostListener } from '@angular/core';
 import { Settings } from '../../../../shared/models/settings';
 import * as _ from 'lodash';
 import * as d3 from 'd3';
 import { SvgToPngService } from '../../../../shared/svg-to-png/svg-to-png.service';
 import { ConvertUnitsService } from '../../../../shared/convert-units/convert-units.service';
-import { SteamPropertiesOutput, SaturatedPropertiesOutput } from '../../../../shared/models/steam';
+import { SaturatedPropertiesOutput } from '../../../../shared/models/steam/steam-outputs';
 
 @Component({
   selector: 'app-saturated-properties-graph',
@@ -758,4 +758,12 @@ export class SaturatedPropertiesGraphComponent implements OnInit {
     }, 200);
   }
   //========== end chart resize functions ==========
+  @HostListener('document:keyup', ['$event'])
+  closeExpandedGraph(event) {
+    if (this.expanded) {
+      if (event.code == 'Escape') {
+        this.contractChart();
+      }
+    }
+  }
 }

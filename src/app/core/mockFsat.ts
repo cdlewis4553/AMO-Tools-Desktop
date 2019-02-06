@@ -175,7 +175,7 @@ export const MockFsatSettings: Settings = {
     flowMeasurement: "gpm",
     powerMeasurement: "hp",
     pressureMeasurement: "psi",
-    steamPressureMeasurement: "kPa",
+    steamPressureMeasurement: "kPag",
     steamTemperatureMeasurement: "C",
     steamSpecificEnthalpyMeasurement: "kJkg",
     steamSpecificEntropyMeasurement: "kJkgK",
@@ -229,7 +229,7 @@ export const MockFsatSettings: Settings = {
         },
         date: "Tue Dec 04 2018"
     },
-    steamPowerMeasurement: "MMBtu",
+    steamPowerMeasurement: "kW",
     steamEnergyMeasurement: "MMBtu"
 }
 
@@ -240,7 +240,7 @@ origin: "AMO-TOOLS-DESKTOP"
 */
 
 export const MockFsatCalculator: Calculator = {
-    pumpCurveForm: {
+    pumpCurve: {
         dataRows: [
             {
                 head: 22.3,

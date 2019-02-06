@@ -4,10 +4,11 @@ import { Settings } from '../../../shared/models/settings';
 import { SettingsDbService } from '../../../indexedDb/settings-db.service';
 import { SteamService } from '../steam.service';
 import { HeatLossService } from './heat-loss.service';
-import { HeatLossInput, HeatLossOutput } from '../../../shared/models/steam';
+import { HeatLossInput } from '../../../shared/models/steam/steam-inputs';
+import { HeatLossOutput } from '../../../shared/models/steam/steam-outputs';
 
 @Component({
-  selector: 'app-heat-loss',
+  selector: 'app-heat-loss-calculator',
   templateUrl: './heat-loss.component.html',
   styleUrls: ['./heat-loss.component.css']
 })

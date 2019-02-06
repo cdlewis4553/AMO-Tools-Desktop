@@ -289,21 +289,21 @@ export const MockPsatSettings: Settings = {
     flowMeasurement: "gpm",
     powerMeasurement: "hp",
     pressureMeasurement: "psi",
-    steamPressureMeasurement: "psi",
+    energySourceType: "Fuel",
+    energyResultUnit: "MMBtu",
+    temperatureMeasurement: "F",
     steamTemperatureMeasurement: "F",
+    steamPressureMeasurement: "psig",
     steamSpecificEnthalpyMeasurement: "btuLb",
     steamSpecificEntropyMeasurement: "btulbF",
     steamSpecificVolumeMeasurement: "ft3lb",
     steamMassFlowMeasurement: "klb",
-    steamPowerMeasurement: "MMBtu",
+    steamPowerMeasurement: "kW",
     currentMeasurement: null,
     viscosityMeasurement: null,
     voltageMeasurement: null,
-    energySourceType: "Fuel",
     furnaceType: null,
-    energyResultUnit: "MMBtu",
     customFurnaceName: null,
-    temperatureMeasurement: "F",
     appVersion: "0.3.1-beta",
     fanCurveType: null,
     fanConvertedConditions: null,
@@ -358,7 +358,7 @@ export const MockPsatSettings: Settings = {
 }
 
 export const MockPsatCalculator: Calculator = {
-    pumpCurveForm: {
+    pumpCurve: {
         dataRows: [
             {
                 flow: 0,
