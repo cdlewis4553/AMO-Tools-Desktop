@@ -8,8 +8,8 @@
   "repository": "https://github.com/ORNL-AMO/AMO-Tools-Desktop.git",
   "angular-cli": {},
   "engines": {
-    "node": "10.11.0",
-    "npm": "6.4.1"
+    "node": "^8.11.0",
+    "npm": "^5.0.0"
   },
   "scripts": {
     "ng": "ng",
@@ -46,13 +46,13 @@
     "@angular/platform-server": "7.2.8",
     "@angular/router": "7.2.8",
     "ajv": "^5.2.2",
-    "amo-tools-suite": "../AMO-Tools-Suite",
+    "amo-tools-suite": "file:../AMO-Tools-Suite",
     "bootstrap": "4.3.1",
-    "electron-log": "3.0.1",
-    "electron-updater": "4.0.6",
     "c3": "^0.4.18",
     "core-js": "^2.4.1",
     "d3": "4.5.0",
+    "electron-log": "3.0.1",
+    "electron-updater": "4.0.6",
     "font-awesome": "^4.7.0",
     "ngx-electron": "2.1.1",
     "regression": "^2.0.0",
@@ -107,8 +107,8 @@
     "@types/node": "11.11.1",
     "chart.js": "^2.7.0",
     "codelyzer": "4.5.0",
-    "electron": "4.0.8",
-    "electron-builder": "20.39.0",
+    "electron": "^1.7.6",
+    "electron-builder": "19.53.2",
     "electron-download-tf": "^4.3.4",
     "electron-packager": "13.1.1",
     "jasmine-core": "~2.5.2",
