@@ -3,6 +3,7 @@ import { FormGroup } from "@angular/forms";
 import { Settings } from "../../../../shared/models/settings";
 import { SteamPropertiesOutput } from "../../../../shared/models/steam/steam-outputs";
 import { SteamService } from "../../steam.service";
+import { ConvertUnitsService } from '../../../../shared/convert-units/convert-units.service';
 
 @Component({
   selector: 'app-steam-properties-form',
@@ -24,7 +25,11 @@ export class SteamPropertiesFormComponent implements OnInit {
   emitQuantityChange = new EventEmitter<number>();
 
 
-  constructor(private steamService: SteamService) {
+  temperatureWarningP1: string;
+  temperatureWarningP2: string;
+  temperatureWarningP3: string;
+  maxTemp: number;
+  constructor(private convertUnitsService: ConvertUnitsService) {
   }
 
   ngOnInit() {
@@ -47,7 +52,7 @@ export class SteamPropertiesFormComponent implements OnInit {
     };
   }
   calculate() {
-    if (this.steamPropertiesForm.status === 'INVALID') {
+    if (this.steamPropertiesForm.valid == false) {
       this.steamPropertiesOutput = {
         pressure: 0,
         temperature: 0,
@@ -58,6 +63,7 @@ export class SteamPropertiesFormComponent implements OnInit {
       };
     }
     this.emitCalculate.emit(this.steamPropertiesForm);
+    this.checkTemperatureWarning();
   }
 
   getOptionDisplayUnit(quantity: number) {
@@ -76,4 +82,42 @@ export class SteamPropertiesFormComponent implements OnInit {
     }
   }
 
+
+  checkTemperatureWarning() {
+    let maxMPaa: number = this.convertUnitsService.value(50).from('MPaa').to(this.settings.steamPressureMeasurement);
+    if (this.steamPropertiesOutput.temperature != 0) {
+      if (this.steamPropertiesForm.controls.pressure.value <= maxMPaa) {
+        this.maxTemp = this.convertUnitsService.value(2273.15).from('K').to(this.settings.steamTemperatureMeasurement);
+        if (this.maxTemp < this.steamPropertiesOutput.temperature) {
+          this.temperatureWarningP1 = "Temperature of steam (";
+          this.temperatureWarningP2 = ") exceeds boundaries of algorithm (";
+          this.temperatureWarningP3 = ") for this pressure. Results may not be accurate.";
+        } else {
+          this.temperatureWarningP1 = null;
+          this.temperatureWarningP2 = null;
+          this.temperatureWarningP3 = null;
+        }
+
+      } else if (this.steamPropertiesForm.controls.pressure.value > maxMPaa) {
+        this.maxTemp = this.convertUnitsService.value(1073.15).from('K').to(this.settings.steamTemperatureMeasurement);
+        if (this.maxTemp < this.steamPropertiesOutput.temperature) {
+          this.temperatureWarningP1 = "Temperature of steam (";
+          this.temperatureWarningP2 = ") exceeds boundaries of algorithm (";
+          this.temperatureWarningP3 = ") for this pressure. Results may not be accurate.";
+        } else {
+          this.temperatureWarningP1 = null;
+          this.temperatureWarningP2 = null;
+          this.temperatureWarningP3 = null;
+        }
+      } else {
+        this.temperatureWarningP1 = null;
+        this.temperatureWarningP2 = null;
+        this.temperatureWarningP3 = null;
+      }
+    } else {
+      this.temperatureWarningP1 = null;
+      this.temperatureWarningP2 = null;
+      this.temperatureWarningP3 = null;
+    }
+  }
 }

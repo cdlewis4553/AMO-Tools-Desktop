@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, ChangeDetectorRef, HostListener } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, ValidatorFn } from "@angular/forms";
 import { Settings } from "../../../shared/models/settings";
 import { SettingsDbService } from '../../../indexedDb/settings-db.service';
 import { SteamPropertiesInput } from '../../../shared/models/steam/steam-inputs';
@@ -81,25 +81,38 @@ export class SteamPropertiesComponent implements OnInit {
   }
 
   getForm(quantityValue: number) {
-    this.ranges = this.getRanges(quantityValue);
     if (this.steamService.steamPropertiesInput) {
+      this.ranges = this.getRanges(quantityValue, this.steamService.steamPropertiesInput.pressure);
+      let quantityValueValidators: Array<ValidatorFn> = [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)];
+      // if (this.steamService.steamPropertiesInput.thermodynamicQuantity != 0) {
+      //   quantityValueValidators = [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)];
+      // }
       this.steamPropertiesForm = this.formBuilder.group({
         'pressure': [this.steamService.steamPropertiesInput.pressure, [Validators.required, Validators.min(this.ranges.minPressure), Validators.max(this.ranges.maxPressure)]],
         'thermodynamicQuantity': [this.steamService.steamPropertiesInput.thermodynamicQuantity, Validators.required],
-        'quantityValue': [this.steamService.steamPropertiesInput.quantityValue, [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)]]
+        'quantityValue': [this.steamService.steamPropertiesInput.quantityValue, quantityValueValidators]
       });
     } else {
+      this.ranges = this.getRanges(quantityValue, 0);
+      let quantityValueValidators: Array<ValidatorFn> = [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)];
+      // if (quantityValue != 0) {
+      //   quantityValueValidators = [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)];
+      // }
       this.steamPropertiesForm = this.formBuilder.group({
         'pressure': ['', [Validators.required, Validators.min(this.ranges.minPressure), Validators.max(this.ranges.maxPressure)]],
         'thermodynamicQuantity': [quantityValue, Validators.required],
-        'quantityValue': ['', [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)]]
+        'quantityValue': ['', quantityValueValidators]
       });
     }
   }
 
-  updateForm(quantityValue: number) {
-    this.ranges = this.getRanges(quantityValue);
-    this.steamPropertiesForm.controls.quantityValue.setValidators([Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)]);
+  updateForm() {
+    this.ranges = this.getRanges(this.steamPropertiesForm.controls.thermodynamicQuantity.value, this.steamPropertiesForm.controls.pressure.value);
+    let quantityValueValidators: Array<ValidatorFn> = [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)];
+    // if (this.steamPropertiesForm.controls.thermodynamicQuantity.value != 0) {
+    //   quantityValueValidators = [Validators.required, Validators.min(this.ranges.minQuantityValue), Validators.max(this.ranges.maxQuantityValue)];
+    // }
+    this.steamPropertiesForm.controls.quantityValue.setValidators(quantityValueValidators);
   }
 
   setTab(str: string) {
@@ -145,6 +158,7 @@ export class SteamPropertiesComponent implements OnInit {
       pressure: form.controls.pressure.value
     };
     this.steamService.steamPropertiesInput = input;
+    this.updateForm();
     if (form.status === 'VALID') {
       this.steamPropertiesOutput = this.steamService.steamProperties(input, this.settings);
       this.plotReady = true;
@@ -177,10 +191,18 @@ export class SteamPropertiesComponent implements OnInit {
     this.graphToggle = this.graphToggleForm.controls.graphToggle.value.toString();
   }
 
-  getRanges(quantityValue: number): { minPressure: number, maxPressure: number, minQuantityValue: number, maxQuantityValue: number } {
+  getRanges(quantityValue: number, pressure: number): { minPressure: number, maxPressure: number, minQuantityValue: number, maxQuantityValue: number } {
     let quantityRanges: { min: number, max: number } = this.steamService.getQuantityRange(this.settings, quantityValue);
+    if (quantityValue == 0) {
+      let maxMPaa: number = this.convertUnitsService.value(50).from('MPaa').to(this.settings.steamPressureMeasurement);
+      if (pressure <= maxMPaa) {
+        quantityRanges.max = this.convertUnitsService.value(2273.15).from('K').to(this.settings.steamTemperatureMeasurement);
+      } else {
+        quantityRanges.max = this.convertUnitsService.value(1073.15).from('K').to(this.settings.steamTemperatureMeasurement);
+      }
+    }
     let minPressure: number = Number(this.convertUnitsService.value(1).from('kPaa').to(this.settings.steamPressureMeasurement).toFixed(3));
-    let maxPressure: number = Number(this.convertUnitsService.value(22064).from('kPaa').to(this.settings.steamPressureMeasurement).toFixed(3));
+    let maxPressure: number = Number(this.convertUnitsService.value(100).from('MPaa').to(this.settings.steamPressureMeasurement).toFixed(3));
     return { minQuantityValue: quantityRanges.min, maxQuantityValue: quantityRanges.max, minPressure: minPressure, maxPressure: maxPressure };
   }
 }
