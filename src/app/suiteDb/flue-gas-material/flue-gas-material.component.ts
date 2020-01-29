@@ -71,7 +71,9 @@ export class FlueGasMaterialComponent implements OnInit {
       this.allMaterials = this.suiteDbService.selectGasFlueGasMaterials();
       this.indexedDbService.getFlueGasMaterials().then(idbResults => {
         this.allCustomMaterials = idbResults;
-        this.sdbEditMaterialId = _.find(this.allMaterials, (material) => { return this.existingMaterial.substance == material.substance }).id;
+        console.log('allCustomMaterials = ');
+        console.log(this.allCustomMaterials);
+        this.sdbEditMaterialId = _.find(this.allCustomMaterials, (material) => { return this.existingMaterial.substance == material.substance }).id;
         this.setExisting();
       });
       this.checkEditMaterialName();

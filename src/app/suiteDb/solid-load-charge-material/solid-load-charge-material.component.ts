@@ -54,7 +54,12 @@ export class SolidLoadChargeMaterialComponent implements OnInit {
       this.allMaterials = this.suiteDbService.selectSolidLoadChargeMaterials();
       this.indexedDbService.getAllSolidLoadChargeMaterial().then(idbResults => {
         this.allCustomMaterials = idbResults;
-        this.sdbEditMaterialId = _.find(this.allMaterials, (material) => { return this.existingMaterial.substance === material.substance; }).id;
+        // this.sdbEditMaterialId = _.find(this.allMaterials, (material) => { return this.existingMaterial.substance === material.substance; }).id;
+        console.log('allCustomMaterials = ');
+        console.log(this.allCustomMaterials);
+        console.log('allMaterials = ');
+        console.log(this.allMaterials);
+        this.sdbEditMaterialId = _.find(this.allCustomMaterials, (material) => { return this.existingMaterial.substance === material.substance; }).id;
         this.idbEditMaterialId = _.find(this.allCustomMaterials, (material) => { return this.existingMaterial.substance === material.substance; }).id;
         this.setExisting();
       });
@@ -85,6 +90,7 @@ export class SolidLoadChargeMaterialComponent implements OnInit {
   }
 
   updateMaterial() {
+    console.log('updateMaterial()');
     if (this.settings.unitsOfMeasure === 'Metric') {
       this.newMaterial.meltingPoint = this.convertUnitsService.value(this.newMaterial.meltingPoint).from('C').to('F');
       this.newMaterial.specificHeatLiquid = this.convertUnitsService.value(this.newMaterial.specificHeatLiquid).from('kJkgC').to('btulbF');
@@ -92,12 +98,18 @@ export class SolidLoadChargeMaterialComponent implements OnInit {
       this.newMaterial.latentHeat = this.convertUnitsService.value(this.newMaterial.latentHeat).from('kJkg').to('btuLb');
     }
     this.newMaterial.id = this.sdbEditMaterialId;
+    console.log('newMaterial = ');
+    console.log(this.newMaterial);
+    // console.log(this.suiteDbService.testUpdateSolidLoadChargeMaterial());
     let suiteDbResult = this.suiteDbService.updateSolidLoadChargeMaterial(this.newMaterial);
+    console.log('suiteDbResult = ');
+    console.log(suiteDbResult);
     if (suiteDbResult === true) {
       //need to set id for idb to put updates
       this.newMaterial.id = this.idbEditMaterialId;
       this.indexedDbService.putSolidLoadChargeMaterial(this.newMaterial).then(val => {
         this.closeModal.emit(this.newMaterial);
+        console.log('success');
       });
     }
   }

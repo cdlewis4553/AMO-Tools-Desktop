@@ -126,6 +126,18 @@ export class SuiteDbService {
     return db.updateLiquidLoadChargeMaterial(material);
   }
 
+  testUpdateSolidLoadChargeMaterial() {
+    let substance: SolidLoadChargeMaterial = {
+      substance: 'New Material',
+      latentHeat: 0,
+      meltingPoint: 0,
+      specificHeatLiquid: 0,
+      specificHeatSolid: 0,
+      id: 9999
+    };
+    let result = db.updateSolidLoadChargeMaterial(substance);
+    console.log(result);
+  }
   updateSolidLoadChargeMaterial(material: SolidLoadChargeMaterial) {
     return db.updateSolidLoadChargeMaterial(material);
   }
