@@ -145,6 +145,14 @@
 	//	var autoUpdater = require('electron-updater');
 		//var json2csv = require("../node_modules/dist/json2csv.js");
 	</script>
+	<script>
+		var Module = {
+			onRuntimeInitialized: function () {
+				console.log('Tools Suite Module Initialized');
+			}
+		}
+	</script>
+	<script src="assets/client.js"></script>
 
 </body>
 
