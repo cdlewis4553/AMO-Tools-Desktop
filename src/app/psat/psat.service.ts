@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PsatInputs, PsatOutputs } from '../shared/models/psat';
 import { Settings } from '../shared/models/settings';
 import { ConvertUnitsService } from '../shared/convert-units/convert-units.service';
-declare var psatAddon: any;
+// declare var psatAddon: any;
 import { BehaviorSubject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { MotorService } from './motor/motor.service';
@@ -10,6 +10,8 @@ import { FieldDataService } from './field-data/field-data.service';
 import { PumpFluidService } from './pump-fluid/pump-fluid.service';
 import * as _ from 'lodash';
 import { pumpTypesConstant, motorEfficiencyConstants, driveConstants } from './psatConstants';
+
+declare var Module: any;
 
 @Injectable()
 export class PsatService {
@@ -24,11 +26,10 @@ export class PsatService {
     private motorService: MotorService, private fieldDataService: FieldDataService) {
     this.getResults = new BehaviorSubject<boolean>(true);
     this.modalOpen = new BehaviorSubject<boolean>(true);
-
   }
 
   test() {
-    console.log(psatAddon);
+    // console.log(psatAddon);
   }
 
   roundVal(val: number, digits: number) {
@@ -71,26 +72,80 @@ export class PsatService {
   //results
   resultsExisting(psatInputs: PsatInputs, settings: Settings): PsatOutputs {
     let tmpInputs: PsatInputs = this.convertInputs(psatInputs, settings);
+    let psatResult = this.getPsatModuleFromInputs(tmpInputs);
+    let calculatedResults = psatResult.calculateExisting();
+    calculatedResults.annual_savings_potential = psatResult.getAnnualSavingsPotential() * 1000;
+    calculatedResults.optimization_rating = psatResult.getOptimizationRating();
+    calculatedResults.pump_efficiency = calculatedResults.pump_efficiency * 100;
+    calculatedResults.motor_efficiency = calculatedResults.motor_efficiency * 100;
+    calculatedResults.motor_power_factor = calculatedResults.motor_power_factor * 100;
+    calculatedResults.drive_efficiency = calculatedResults.drive_efficiency * 100;
+    calculatedResults.annual_cost = calculatedResults.annual_cost * 1000;
+    psatResult.delete();
     //call results existing
-    let tmpResults: PsatOutputs = psatAddon.resultsExisting(tmpInputs);
-
-
+    // let tmpResults: PsatOutputs = psatAddon.resultsExisting(tmpInputs);
     if (settings.powerMeasurement != 'hp') {
-      tmpResults = this.convertOutputs(tmpResults, settings);
+      calculatedResults = this.convertOutputs(calculatedResults, settings);
     }
-    tmpResults = this.roundResults(tmpResults);
-    return tmpResults;
+    calculatedResults = this.roundResults(calculatedResults);
+    return calculatedResults;
   }
 
   resultsModified(psatInputs: PsatInputs, settings: Settings): PsatOutputs {
     let tmpInputs: any = this.convertInputs(psatInputs, settings);
     tmpInputs.margin = 1;
-    let tmpResults: PsatOutputs = psatAddon.resultsModified(tmpInputs);
+    // let tmpResults: PsatOutputs = psatAddon.resultsModified(tmpInputs);
+    let psatResult = this.getPsatModuleFromInputs(tmpInputs);
+    let calculatedResults = psatResult.calculateModified();
+    calculatedResults.annual_savings_potential = psatResult.getAnnualSavingsPotential() * 1000;
+    calculatedResults.optimization_rating = psatResult.getOptimizationRating();
+    calculatedResults.pump_efficiency = calculatedResults.pump_efficiency * 100;
+    calculatedResults.motor_efficiency = calculatedResults.motor_efficiency * 100;
+    calculatedResults.motor_power_factor = calculatedResults.motor_power_factor * 100;
+    calculatedResults.drive_efficiency = calculatedResults.drive_efficiency * 100;
+    calculatedResults.annual_cost = calculatedResults.annual_cost * 1000;
+    psatResult.delete();
     if (settings.powerMeasurement != 'hp') {
-      tmpResults = this.convertOutputs(tmpResults, settings);
+      psatResult = this.convertOutputs(calculatedResults, settings);
     }
-    tmpResults = this.roundResults(tmpResults);
-    return tmpResults;
+    psatResult = this.roundResults(calculatedResults);
+    return psatResult;
+  }
+
+  getPsatModuleFromInputs(tmpInputs: PsatInputs){
+    let pumpStyle = this.getPumpStyleFromEnum(tmpInputs.pump_style);
+    let pumpEfficiency = tmpInputs.pump_specified / 100;
+    let rpm = tmpInputs.motor_rated_speed;
+    let drive = this.getDriveEnum(tmpInputs.drive);
+    let kviscosity = tmpInputs.kinematic_viscosity;
+    let specificGravity = tmpInputs.specific_gravity;
+    let stageCount = tmpInputs.stages;
+    let speed = this.getFixedSpeedEnum(tmpInputs.fixed_speed);
+    let specifiedDriveEfficiency = tmpInputs.specifiedDriveEfficiency / 100;
+    let pumpInput = new Module.PsatInput(pumpStyle, pumpEfficiency, rpm, drive, kviscosity, specificGravity, stageCount, speed, specifiedDriveEfficiency);
+    //motor
+    let lineFrequency = this.getLineFrequencyEnum(tmpInputs.line_frequency);
+    let motorRatedPower = tmpInputs.motor_rated_power;
+    let motorRpm = tmpInputs.motor_rated_speed;
+    let efficiencyClass = this.getMotorEfficiencyEnum(tmpInputs.efficiency_class);
+    let specifiedMotorEfficiency = tmpInputs.efficiency / 100;
+    let motorRatedVoltage = tmpInputs.motor_rated_voltage;
+    let fullLoadAmps = tmpInputs.motor_rated_fla;
+    let sizeMargin = tmpInputs.margin;
+    let motor = new Module.Motor(lineFrequency, motorRatedPower, motorRpm, efficiencyClass, specifiedMotorEfficiency, motorRatedVoltage, fullLoadAmps, sizeMargin);
+    //field data
+    let flowRate = tmpInputs.flow_rate;
+    let head = tmpInputs.head;
+    let loadEstimationMethod = this.getLoadEstimationMethod(tmpInputs.load_estimation_method);
+    let motorPower = tmpInputs.motor_field_power;
+    let motorAmps = tmpInputs.motor_field_current;
+    let voltage = tmpInputs.motor_field_voltage;
+    let fieldData = new Module.PumpFieldData(flowRate, head, loadEstimationMethod, motorPower, motorAmps, voltage);
+    let psat = new Module.PSAT(pumpInput, motor, fieldData, tmpInputs.operating_hours, tmpInputs.cost_kw_hour);
+    fieldData.delete();
+    motor.delete();
+    pumpInput.delete();
+    return psat;
   }
 
   emptyResults(): PsatOutputs {
@@ -172,20 +227,24 @@ export class PsatService {
       flowRate = this.convertUnitsService.value(flowRate).from(settings.flowMeasurement).to('gpm');
     }
 
-    let inputs: any = {
-      specificGravity: specificGravity,
-      flowRate: flowRate,
-      suctionPipeDiameter: suctionPipeDiameter,
-      suctionTankGasOverPressure: suctionTankGasOverPressure,
-      suctionTankFluidSurfaceElevation: suctionTankFluidSurfaceElevation,
-      suctionLineLossCoefficients: suctionLineLossCoefficients,
-      dischargePipeDiameter: dischargePipeDiameter,
-      dischargeGaugePressure: dischargeGaugePressure,
-      dischargeGaugeElevation: dischargeGaugeElevation,
-      dischargeLineLossCoefficients: dischargeLineLossCoefficients
-    }
+    // let inputs: any = {
+    //   specificGravity: specificGravity,
+    //   flowRate: flowRate,
+    //   suctionPipeDiameter: suctionPipeDiameter,
+    //   suctionTankGasOverPressure: suctionTankGasOverPressure,
+    //   suctionTankFluidSurfaceElevation: suctionTankFluidSurfaceElevation,
+    //   suctionLineLossCoefficients: suctionLineLossCoefficients,
+    //   dischargePipeDiameter: dischargePipeDiameter,
+    //   dischargeGaugePressure: dischargeGaugePressure,
+    //   dischargeGaugeElevation: dischargeGaugeElevation,
+    //   dischargeLineLossCoefficients: dischargeLineLossCoefficients
+    // }
 
-    let tmpResults = psatAddon.headToolSuctionTank(inputs);
+
+    let instance = new Module.HeadToolSuctionTank(specificGravity, flowRate, suctionPipeDiameter, suctionTankGasOverPressure, suctionTankFluidSurfaceElevation, suctionLineLossCoefficients, dischargePipeDiameter, dischargeGaugePressure, dischargeGaugeElevation, dischargeLineLossCoefficients);
+    let tmpResults = instance.calculate();
+    instance.delete();
+    // let tmpResults = psatAddon.headToolSuctionTank(inputs);
     if (settings.distanceMeasurement != 'ft') {
       tmpResults.differentialElevationHead = this.convertUnitsService.value(tmpResults.differentialElevationHead).from('ft').to(settings.distanceMeasurement);
       tmpResults.differentialPressureHead = this.convertUnitsService.value(tmpResults.differentialPressureHead).from('ft').to(settings.distanceMeasurement);
@@ -242,20 +301,26 @@ export class PsatService {
       suctionGaugePressure = this.convertUnitsService.value(suctionGaugePressure).from(settings.pressureMeasurement).to('psi');
     }
 
-    let inputs: any = {
-      specificGravity: specificGravity,
-      flowRate: flowRate,
-      suctionPipeDiameter: suctionPipeDiameter,
-      suctionGaugePressure: suctionGaugePressure,
-      suctionGaugeElevation: suctionGaugeElevation,
-      suctionLineLossCoefficients: suctionLineLossCoefficients,
-      dischargePipeDiameter: dischargePipeDiameter,
-      dischargeGaugePressure: dischargeGaugePressure,
-      dischargeGaugeElevation: dischargeGaugeElevation,
-      dischargeLineLossCoefficients: dischargeLineLossCoefficients
-    }
+    // let inputs: any = {
+    //   specificGravity: specificGravity,
+    //   flowRate: flowRate,
+    //   suctionPipeDiameter: suctionPipeDiameter,
+    //   suctionGaugePressure: suctionGaugePressure,
+    //   suctionGaugeElevation: suctionGaugeElevation,
+    //   suctionLineLossCoefficients: suctionLineLossCoefficients,
+    //   dischargePipeDiameter: dischargePipeDiameter,
+    //   dischargeGaugePressure: dischargeGaugePressure,
+    //   dischargeGaugeElevation: dischargeGaugeElevation,
+    //   dischargeLineLossCoefficients: dischargeLineLossCoefficients
+    // }
 
-    let tmpResults = psatAddon.headTool(inputs);
+    let instance = new Module.HeadTool(specificGravity, flowRate, suctionPipeDiameter, suctionGaugePressure,
+      suctionGaugeElevation, suctionLineLossCoefficients, dischargePipeDiameter,
+      dischargeGaugePressure, dischargeGaugeElevation, dischargeLineLossCoefficients);
+    let tmpResults = instance.calculate();
+    instance.delete();
+
+    // let tmpResults = psatAddon.headTool(inputs);
     if (settings.distanceMeasurement != 'ft') {
       tmpResults.differentialElevationHead = this.convertUnitsService.value(tmpResults.differentialElevationHead).from('ft').to(settings.distanceMeasurement);
       tmpResults.differentialPressureHead = this.convertUnitsService.value(tmpResults.differentialPressureHead).from('ft').to(settings.distanceMeasurement);
@@ -276,7 +341,7 @@ export class PsatService {
   }
 
   estFLA(
-    horsePower: number,
+    motorRatedPower: number,
     motorRPM: number,
     frequency: number,
     efficiencyClass: number,
@@ -286,44 +351,48 @@ export class PsatService {
   ) {
     if (settings.powerMeasurement != 'hp') {
       // horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
-      horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
+      motorRatedPower = this.convertUnitsService.value(motorRatedPower).from(settings.powerMeasurement).to('hp');
     }
-    let inputs: any = {
-      motor_rated_power: horsePower,
-      motor_rated_speed: motorRPM,
-      line_frequency: frequency,
-      efficiency_class: efficiencyClass,
-      efficiency: efficiency,
-      motor_rated_voltage: motorVoltage
-    }
-    return this.roundVal(psatAddon.estFLA(inputs), 2);
-
+    // let inputs: any = {
+    //   motor_rated_power: motorRatedPower,
+    //   motor_rated_speed: motorRPM,
+    //   line_frequency: frequency,
+    //   efficiency_class: efficiencyClass,
+    //   efficiency: efficiency,
+    //   motor_rated_voltage: motorVoltage
+    // }
+    let lineFrequency = this.getLineFrequencyEnum(frequency);
+    let motorEfficiencyEnum = this.getMotorEfficiencyEnum(efficiencyClass);
+    let instance = new Module.EstimateFLA(motorRatedPower, motorRPM, lineFrequency, motorEfficiencyEnum, efficiency, motorVoltage);
+    let estimatedFLA = instance.getEstimatedFLA();
+    instance.delete();
+    return this.roundVal(estimatedFLA, 2);
   }
 
-
-  estFanFLA(
-    horsePower: number,
-    motorRPM: number,
-    frequency: number,
-    efficiencyClass: number,
-    efficiency: number,
-    motorVoltage: number,
-    settings: Settings
-  ){
-    if (settings.fanPowerMeasurement != 'hp') {
-      // horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
-      horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
-    }
-    let inputs: any = {
-      motor_rated_power: horsePower,
-      motor_rated_speed: motorRPM,
-      line_frequency: frequency,
-      efficiency_class: efficiencyClass,
-      efficiency: efficiency,
-      motor_rated_voltage: motorVoltage
-    }
-    return this.roundVal(psatAddon.estFLA(inputs), 2);
-  }
+  // estFanFLA(
+  //   horsePower: number,
+  //   motorRPM: number,
+  //   frequency: number,
+  //   efficiencyClass: number,
+  //   efficiency: number,
+  //   motorVoltage: number,
+  //   settings: Settings
+  // ) {
+  //   if (settings.fanPowerMeasurement != 'hp') {
+  //     // horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
+  //     horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
+  //   }
+  //   let inputs: any = {
+  //     motor_rated_power: horsePower,
+  //     motor_rated_speed: motorRPM,
+  //     line_frequency: frequency,
+  //     efficiency_class: efficiencyClass,
+  //     efficiency: efficiency,
+  //     motor_rated_voltage: motorVoltage
+  //   }
+  //   return this.roundVal(psatAddon.estFLA(inputs), 2);
+  // }
+  
   getFlaRange() {
     return this.flaRange;
   }
@@ -333,11 +402,15 @@ export class PsatService {
     pumpStyle: number,
     specificSpeed: number
   ) {
-    let inputs: any = {
-      pump_style: pumpStyle,
-      specific_speed: specificSpeed
-    }
-    return this.roundVal(psatAddon.achievableEfficiency(inputs), 2);
+    // let inputs: any = {
+    //   pump_style: pumpStyle,
+    //   specific_speed: specificSpeed
+    // }
+    let pumpStyleEnum = this.getPumpStyleEnum(pumpStyle);
+    let instance = new Module.OptimalSpecificSpeedCorrection(pumpStyleEnum, specificSpeed);
+    let results = instance.calculate() * 100;
+    instance.delete();
+    return this.roundVal(results, 2);
   }
 
   ///achievable pump efficiency
@@ -350,11 +423,14 @@ export class PsatService {
     if (settings.flowMeasurement != 'gpm') {
       flowRate = this.convertUnitsService.value(flowRate).from(settings.flowMeasurement).to('gpm');
     }
-    let inputs: any = {
-      pump_style: pumpStyle,
-      flow_rate: flowRate
-    }
-    let tmpResults = psatAddon.pumpEfficiency(inputs);
+    // let inputs: any = {
+    //   pump_style: pumpStyle,
+    //   flow_rate: flowRate
+    // }
+    // let tmpResults = psatAddon.pumpEfficiency(inputs);
+    let pumpStyleEnum = this.getPumpStyleEnum(pumpStyle);
+    let instance = new Module.PumpEfficiency(pumpStyleEnum, flowRate);
+    let tmpResults = instance.calculate();
     let results = {
       average: this.roundVal(tmpResults.average, 2),
       max: this.roundVal(tmpResults.max, 2)
@@ -365,29 +441,34 @@ export class PsatService {
   motorPerformance(
     lineFreq: number,
     efficiencyClass: number,
-    horsePower: number,
+    motorRatedPower: number,
     motorRPM: number,
-    efficiency: number,
-    motorVoltage: number,
+    specifiedEfficiency: number,
+    motorRatedVoltage: number,
     fullLoadAmps: number,
     loadFactor: number,
     settings: Settings
   ) {
 
     if (settings.powerMeasurement != 'hp') {
-      horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
+      motorRatedPower = this.convertUnitsService.value(motorRatedPower).from(settings.powerMeasurement).to('hp');
     }
-    let tmpInputs: any = {
-      line_frequency: lineFreq,
-      efficiency_class: efficiencyClass,
-      motor_rated_power: horsePower,
-      motor_rated_speed: motorRPM,
-      efficiency: efficiency || 90,
-      load_factor: loadFactor,
-      motor_rated_voltage: motorVoltage,
-      motor_rated_fla: fullLoadAmps
-    }
-    let tmpResults = psatAddon.motorPerformance(tmpInputs);
+    // let tmpInputs: any = {
+    //   line_frequency: lineFreq,
+    //   efficiency_class: efficiencyClass,
+    //   motor_rated_power: horsePower,
+    //   motor_rated_speed: motorRPM,
+    //   efficiency: efficiency || 90,
+    //   load_factor: loadFactor,
+    //   motor_rated_voltage: motorVoltage,
+    //   motor_rated_fla: fullLoadAmps
+    // }
+    // let tmpResults = psatAddon.motorPerformance(tmpInputs);
+    let lineFrequency = this.getLineFrequencyEnum(lineFreq);
+    let motorEfficiencyClass = this.getMotorEfficiencyEnum(efficiencyClass);
+    let instance = new Module.MotorPerformance(lineFrequency, motorRPM, motorEfficiencyClass, motorRatedPower, specifiedEfficiency, loadFactor, motorRatedVoltage, fullLoadAmps);
+    let tmpResults = instance.calculate();
+    instance.delete();
     let results = {
       efficiency: this.roundVal(tmpResults.efficiency, 2),
       motor_current: this.roundVal(tmpResults.motor_current, 2),
@@ -402,21 +483,27 @@ export class PsatService {
     motorRPM: number,
     efficiencyClass: number,
     efficiency: number,
-    horsePower: number,
+    motorRatedPower: number,
     settings: Settings
   ) {
     if (settings.powerMeasurement != 'hp') {
-      horsePower = this.convertUnitsService.value(horsePower).from(settings.powerMeasurement).to('hp');
+      motorRatedPower = this.convertUnitsService.value(motorRatedPower).from(settings.powerMeasurement).to('hp');
     }
-    let tmpInputs = {
-      line_frequency: lineFreq,
-      motor_rated_speed: motorRPM,
-      efficiency_class: efficiencyClass,
-      efficiency: efficiency || 90,
-      motor_rated_power: horsePower,
-      load_factor: 1
-    };
-    return this.roundVal(psatAddon.nema(tmpInputs), 2);
+    // let tmpInputs = {
+    //   line_frequency: lineFreq,
+    //   motor_rated_speed: motorRPM,
+    //   efficiency_class: efficiencyClass,
+    //   efficiency: efficiency || 90,
+    //   motor_rated_power: horsePower,
+    //   load_factor: 1
+    // };
+    let lineFrequency = this.getLineFrequencyEnum(lineFreq);
+    let efficiencyClassEnum = this.getMotorEfficiencyEnum(efficiencyClass);
+    let instance = new Module.MotorEfficiency(lineFrequency, motorRPM, efficiencyClassEnum, motorRatedPower);
+    let loadFactor = 1;
+    let motorEfficiency = instance.calculate(loadFactor, efficiency / 100) * 100;
+    instance.delete();
+    return this.roundVal(motorEfficiency, 2);
   }
   //ENUM Helpers
   getPumpStyleFromEnum(num: number): string {
@@ -514,11 +601,49 @@ export class PsatService {
     return form;
   }
 
-
   isPsatValid(psatInputs: PsatInputs, isBaseline: boolean): boolean {
     let tmpPumpFluidForm: FormGroup = this.pumpFluidService.getFormFromObj(psatInputs);
     let tmpMotorForm: FormGroup = this.motorService.getFormFromObj(psatInputs);
     let tmpFieldDataForm: FormGroup = this.fieldDataService.getFormFromObj(psatInputs, isBaseline);
     return tmpPumpFluidForm.valid && tmpMotorForm.valid && tmpFieldDataForm.valid
+  }
+
+  getPumpStyleEnum(pumpStyle: number){
+    let pumpStyleConstant = _.find(pumpTypesConstant, (pumpType) => {return pumpType.value == pumpStyle});
+    return pumpStyleConstant.enumVal;
+  }
+
+  getLineFrequencyEnum(lineFreq: number) {
+    let lineFrequency = Module.LineFrequency.FREQ50;
+    if (lineFreq == 60) {
+      lineFrequency = Module.LineFrequency.FREQ60;
+    }
+    return lineFrequency;
+  }
+
+  getMotorEfficiencyEnum(motorEffVal: number) {
+    let selectedMotorEfficiencyType = _.find(motorEfficiencyConstants, (motorConstant) => { return motorConstant.value == motorEffVal });
+    return selectedMotorEfficiencyType.enumVal;
+  }
+
+  getDriveEnum(drive: number) {
+    let driveType = _.find(driveConstants, (driveConstant) => { return driveConstant.value == drive });
+    return driveType.enumVal;
+  }
+
+  getFixedSpeedEnum(fixedSpeed: number) {
+    if (fixedSpeed == 0) {
+      return Module.SpecificSpeed.FIXED_SPEED;
+    } else {
+      return Module.SpecificSpeed.NOT_FIXED_SPEED;
+    }
+  }
+
+  getLoadEstimationMethod(method: number) {
+    if (method == 0) {
+      return Module.LoadEstimationMethod.POWER;
+    } else {
+      return Module.LoadEstimationMethod.CURRENT;
+    }
   }
 }

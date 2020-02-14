@@ -1,76 +1,95 @@
-export const pumpTypesConstant: Array<{ value: number, display: string }> = [
+declare var Module: any;
+
+export const pumpTypesConstant: Array<{ value: number, display: string, enumVal?: any }> = [
     {
         value: 0,
-        display: 'End Suction Slurry'
+        display: 'End Suction Slurry',
+        enumVal: Module ? !undefined: Module.PumpStyle.END_SUCTION_SLURRY 
     },
     {
         value: 1,
-        display: 'End Suction Sewage'
+        display: 'End Suction Sewage',
+        enumVal: Module ? !undefined: Module.PumpStyle.END_SUCTION_SEWAGE
     },
     {
         value: 2,
-        display: 'End Suction Stock'
+        display: 'End Suction Stock',
+        enumVal: Module ? !undefined: Module.PumpStyle.END_SUCTION_STOCK
     },
     {
         value: 3,
-        display: 'End Suction Submersible Sewage'
+        display: 'End Suction Submersible Sewage',
+        enumVal: Module ? !undefined: Module.PumpStyle.END_SUCTION_SUBMERSIBLE_SEWAGE
     },
     {
         value: 4,
-        display: 'API Double Suction'
+        display: 'API Double Suction',
+        enumVal: Module ? !undefined: Module.PumpStyle.API_DOUBLE_SUCTION
     },
     {
         value: 5,
-        display: 'Multistage Boiler Feed'
+        display: 'Multistage Boiler Feed',
+        enumVal: Module ? !undefined: Module.PumpStyle.MULTISTAGE_BOILER_FEED
     },
     {
         value: 6,
-        display: 'End Suction ANSI/API'
+        display: 'End Suction ANSI/API',
+        enumVal: Module ? !undefined: Module.PumpStyle.END_SUCTION_ANSI_API
     },
     {
         value: 7,
-        display: 'Axial Flow'
+        display: 'Axial Flow',
+        enumVal: Module ? !undefined: Module.PumpStyle.AXIAL_FLOW
     },
     {
         value: 8,
-        display: 'Double Suction'
+        display: 'Double Suction',
+        enumVal: Module ? !undefined: Module.PumpStyle.DOUBLE_SUCTION
     },
     {
         value: 9,
-        display: 'Vertical Turbine'
+        display: 'Vertical Turbine',
+        enumVal: Module ? !undefined: Module.PumpStyle.VERTICAL_TURBINE
     },
     {
         value: 10,
-        display: 'Large End Suction'
+        display: 'Large End Suction',
+        enumVal: Module ? !undefined: Module.PumpStyle.LARGE_END_SUCTION
     },
     {
         value: 11,
-        display: 'Specified Optimal Efficiency'
+        display: 'Specified Optimal Efficiency',
+        enumVal: Module ? !undefined: Module.PumpStyle.SPECIFIED_OPTIMAL_EFFICIENCY
     }
     // When user selects below they need a way to provide the optimal efficiency
     // 'Specified Optimal Efficiency'
 ];
 
-export const driveConstants: Array<{ value: number, display: string }> = [
+export const driveConstants: Array<{ value: number, display: string, enumVal?: any }> = [
     {
         value: 0,
-        display: 'Direct Drive'
+        display: 'Direct Drive',
+        enumVal: Module ? !undefined: Module.Drive.DIRECT_DRIVE
     },
     {
         value: 1,
-        display: 'V-Belt Drive'
+        display: 'V-Belt Drive',
+        enumVal: Module ? !undefined: Module.Drive.V_BELT_DRIVE
     },
     {
         value: 2,
-        display: 'Notched V-Belt Drive'
+        display: 'Notched V-Belt Drive',
+        enumVal: Module ? !undefined: Module.Drive.N_V_BELT_DRIVE
     },
     {
         value: 3,
-        display: 'Synchronous Belt Drive'
+        display: 'Synchronous Belt Drive',
+        enumVal: Module ? !undefined: Module.Drive.S_BELT_DRIVE
     },
     {
         value: 4,
-        display: 'Specified Efficiency'
+        display: 'Specified Efficiency',
+        enumVal: Module ? !undefined: Module.Drive.SPECIFIED
     }
 ];
 
@@ -104,21 +123,25 @@ export const fluidTypes: Array<string> = [
     'Water'
 ];
 
-export const motorEfficiencyConstants: Array<{ value: number, display: string }> = [
+export const motorEfficiencyConstants: Array<{ value: number, display: string, enumVal?: any }> = [
     {
         value: 0,
-        display: 'Standard Efficiency'
+        display: 'Standard Efficiency',
+        enumVal: Module ? !undefined: Module.MotorEfficiencyClass.STANDARD
     },
     {
         value: 1,
-        display: 'Energy Efficient'
+        display: 'Energy Efficient',
+        enumVal: Module ? !undefined: Module.MotorEfficiencyClass.ENERGY_EFFICIENT
     },
     {
         value: 2,
-        display: 'Premium Efficient'
+        display: 'Premium Efficient',
+        enumVal: Module ? !undefined: Module.MotorEfficiencyClass.PREMIUM
     },
     {
         value: 3,
-        display: 'Specified'
+        display: 'Specified',
+        enumVal: Module ? !undefined: Module.MotorEfficiencyClass.SPECIFIED
     }
 ]
