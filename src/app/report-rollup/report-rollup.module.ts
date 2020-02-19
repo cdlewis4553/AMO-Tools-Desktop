@@ -49,6 +49,7 @@ import { TreasureHuntSummaryComponent } from './report-summary/treasure-hunt-sum
 import { PrintOptionsMenuModule } from '../shared/print-options-menu/print-options-menu.module';
 import { PieChartModule } from '../shared/pie-chart/pie-chart.module';
 import { SharedPipesModule } from '../shared/shared-pipes/shared-pipes.module';
+import { TreasureHuntRollupComponent } from './treasure-hunt-rollup/treasure-hunt-rollup.component';
 
 @NgModule({
   imports: [
@@ -102,6 +103,7 @@ import { SharedPipesModule } from '../shared/shared-pipes/shared-pipes.module';
     SsmtRollupEnergyTableComponent,
     SsmtRollupSteamSummaryTableComponent,
     TreasureHuntSummaryComponent,
+    TreasureHuntRollupComponent,
 
   ],
   providers: [ReportRollupService],

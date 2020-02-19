@@ -18,6 +18,8 @@ export class ReportSummaryComponent implements OnInit {
   showFsatModal = new EventEmitter<boolean>();
   @Output('showSsmtModal')
   showSsmtModal = new EventEmitter<boolean>();
+  @Output('showTreasureHuntModal')
+  showTreasureHuntModal = new EventEmitter<boolean>();
   @Input()
   phastResults: Array<PhastResultsData>;
   @Input()
@@ -62,6 +64,10 @@ export class ReportSummaryComponent implements OnInit {
 
   showSteamModal(){
     this.showSsmtModal.emit(true);
+  }
+
+  showTHuntModal(){
+    this.showTreasureHuntModal.emit(true);
   }
 
   collapseSummary(str: string) {

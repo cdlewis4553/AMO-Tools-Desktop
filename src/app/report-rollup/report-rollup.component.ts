@@ -41,7 +41,7 @@ export class ReportRollupComponent implements OnInit {
   @ViewChild('phastRollupModal', { static: false }) public phastRollupModal: ModalDirective;
   @ViewChild('fsatRollupModal', { static: false }) public fsatRollupModal: ModalDirective;
   @ViewChild('ssmtRollupModal', { static: false }) public ssmtRollupModal: ModalDirective;
-
+  @ViewChild('treasureHuntModal', { static: false }) public treasureHuntModal: ModalDirective;
   @ViewChild('reportHeader', { static: false }) reportHeader: ElementRef;
   // @ViewChild('printMenuModal') public printMenuModal: ModalDirective;
 
@@ -523,6 +523,14 @@ export class ReportRollupComponent implements OnInit {
 
   hideSsmtModal() {
     this.ssmtRollupModal.hide();
+  }
+
+  showTreasureHuntModal() {
+    this.treasureHuntModal.show();
+  }
+
+  hideTreasureHuntModal() {
+    this.treasureHuntModal.hide();
   }
 
   showPrintModal(): void {

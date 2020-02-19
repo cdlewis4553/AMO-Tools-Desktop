@@ -39,6 +39,5 @@ export class TreasureHuntSummaryComponent implements OnInit {
     })
     this.totalSavings = tmpSavings;
     this.totalCost = tmpCost;
-
   }
 }

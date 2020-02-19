@@ -18,8 +18,7 @@
                 (emitPrint)="showPrintModal()" (emitShowUnitModal)="showUnitModal()">
             </app-report-banner>
             <app-report-summary id="reportSummary" [settings]="settings" [numPhasts]="numPhasts" [numPsats]="numPsats"
-                [numFsats]="numFsats" [numTreasureHunt]="numTreasureHunt" (showPhastModal)="showPhastModal()"
-                (showPsatModal)="showPsatModal();" (hideSummary)="setSidebarHeight()" (showFsatModal)="showFsatModal()">
+                [numFsats]="numFsats" [numTreasureHunt]="numTreasureHunt">
             </app-report-summary>
         </div>
     </div>
@@ -27,7 +26,6 @@
 <!--END PRINT-->
 
 <div *ngIf="settings && !gatheringAssessments">
-
     <div class="report-cover" *ngIf="!printView">
         <img src="assets/images/DOE-banner-color.png" class="doe-logo">
 
@@ -50,7 +48,7 @@
                     [numFsats]="numFsats" [numPsats]="numPsats" [numTreasureHunt]="numTreasureHunt" [numSsmt]="numSsmt"
                     (showPhastModal)="showPhastModal()" (showPsatModal)="showPsatModal()"
                     (hideSummary)="setSidebarHeight()" (showFsatModal)="showFsatModal()"
-                    (showSsmtModal)="showSsmtModal()"></app-report-summary>
+                    (showSsmtModal)="showSsmtModal()" (showTreasureHuntModal)="showTreasureHuntModal()"></app-report-summary>
             </div>
         </div>
     </div>
@@ -392,6 +390,24 @@
                 <div class="modal-body">
                     <app-report-rollup-units *ngIf="settings" [settings]="settings" (closeUnitModal)="hideUnitModal()">
                     </app-report-rollup-units>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--treasure hunt rollup modal -->
+    <div bsModal #treasureHuntModal="bs-modal" class="treasure-hunt-modal modal fade treasure-hunt" tabindex="-1" role="dialog"
+        aria-labelledby="treasureHuntModal" aria-hidden="true" [config]="{backdrop: 'fixed'}" *ngIf="assessmentsGathered">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Treasure Hunt Assessment Rollup</h5>
+                    <button class="close" aria-label="Close" (click)="hideTreasureHuntModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body panel-container ssmt scroll-item">
+                    <app-treasure-hunt-rollup></app-treasure-hunt-rollup>
                 </div>
             </div>
         </div>
