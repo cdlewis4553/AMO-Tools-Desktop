@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FsatBarChartComponent } from './fsat-bar-chart.component';
+import { PlotlyBarChartComponent } from './plotly-bar-chart.component';
 
-describe('FsatBarChartComponent', () => {
-  let component: FsatBarChartComponent;
-  let fixture: ComponentFixture<FsatBarChartComponent>;
+describe('PlotlyBarChartComponent', () => {
+  let component: PlotlyBarChartComponent;
+  let fixture: ComponentFixture<PlotlyBarChartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FsatBarChartComponent ]
+      declarations: [ PlotlyBarChartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FsatBarChartComponent);
+    fixture = TestBed.createComponent(PlotlyBarChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

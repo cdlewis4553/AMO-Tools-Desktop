@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PsatBarChartComponent } from './psat-bar-chart.component';
+import { PlotlyPieChartComponent } from './plotly-pie-chart.component';
 
-describe('PsatBarChartComponent', () => {
-  let component: PsatBarChartComponent;
-  let fixture: ComponentFixture<PsatBarChartComponent>;
+describe('PlotlyPieChartComponent', () => {
+  let component: PlotlyPieChartComponent;
+  let fixture: ComponentFixture<PlotlyPieChartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PsatBarChartComponent ]
+      declarations: [ PlotlyPieChartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PsatBarChartComponent);
+    fixture = TestBed.createComponent(PlotlyPieChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
