@@ -54,7 +54,6 @@ import { ToastModule } from '../shared/toast/toast.module';
 import { SharedPipesModule } from '../shared/shared-pipes/shared-pipes.module';
 import { UnitConverterModule } from '../calculator/utilities/unit-converter/unit-converter.module';
 import { SystemAndEquipmentCurveModule } from '../calculator/system-and-equipment-curve/system-and-equipment-curve.module';
-import { PsatSankeyModule } from '../shared/psat-sankey/psat-sankey.module';
 import { SankeyModule } from '../shared/sankey/sankey.module';
 import { PsatSankeyComponent } from './psat-sankey/psat-sankey.component';
 // import { PsatSankeyComponent } from '../shared/psat-sankey/psat-sankey/psat-sankey.component';

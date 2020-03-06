@@ -18,7 +18,21 @@ export interface SankeyNode {
     y: number,
     nodeColor: string,
     source: number,
-    target: number[],
+    targets: number[],
     isConnector: boolean,
-    id?: string,
+    id?: string
+}
+
+export interface SankeyData {
+    energyInput: number,
+    losses: Array<{ label: string, value: number }>,
+    additions: Array<{ label: string, value: number }>
+    outputEnergy: number
+}
+
+export interface SankeyColors {
+    gradientStartColor: string;
+    gradientEndColor: string;
+    nodeStartColor: string;
+    nodeArrowColor: string;
 }

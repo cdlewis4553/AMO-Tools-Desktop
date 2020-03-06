@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { SankeyNode } from '../models/psat/sankey.model';
+import { SankeyNode, SankeyData, SankeyColors } from '../models/psat/sankey.model';
 import * as Plotly from 'plotly.js';
+import { SankeyService } from './sankey.service';
 
 @Component({
   selector: 'app-sankey',
@@ -9,40 +10,43 @@ import * as Plotly from 'plotly.js';
 })
 export class SankeyComponent implements OnInit {
   @Input()
-  nodes: Array<SankeyNode>;
+  sankeyData: SankeyData
   @Input()
-  links: Array<{ source: number, target: number }>;
-  @Input()
-  sankeyColors: {
-    gradientStartColor: string;
-    gradientEndColor: string;
-    nodeStartColor: string;
-    nodeArrowColor: string;
-  }
+  sankeyColors: SankeyColors;
 
   @ViewChild("sankeyDiagram", { static: false }) sankeyDiagram: ElementRef;
-
+  links: Array<{ source: number, target: number }>;
+  nodes: Array<SankeyNode>;
   connectingNodes: Array<number> = [];
   connectingLinkPaths: Array<number> = [];
 
   constructor(
     private _dom: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private sankeyService: SankeyService
   ) { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
+    this.getNodesAndLinks();
     this.buildConnectors();
     this.createSankey();
   }
 
   ngOnChanges() {
     if (this.sankeyDiagram) {
+      this.getNodesAndLinks();
       this.buildConnectors();
       this.createSankey();
     }
+  }
+
+  getNodesAndLinks(){
+    let nodesAndLinks = this.sankeyService.getNodesAndLinks(this.sankeyData);
+    this.nodes = nodesAndLinks.nodes;
+    this.links = nodesAndLinks.links;
   }
 
   closeSankey() {
@@ -156,7 +160,7 @@ export class SankeyComponent implements OnInit {
     const svgDefs = this._dom.nativeElement.querySelector('defs')
 
     svgDefs.innerHTML = `
-    <linearGradient id="psatLinkGradient">
+    <linearGradient id="linkGradient">
       <stop offset="10%" stop-color="${this.sankeyColors.gradientStartColor}" />
       <stop offset="100%" stop-color="${this.sankeyColors.gradientEndColor}" />
     </linearGradient>

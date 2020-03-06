@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PsatSankeyService } from './psat-sankey.service';
+import { SankeyService } from './sankey.service';
 
-describe('PsatSankeyService', () => {
-  let service: PsatSankeyService;
+describe('SankeyService', () => {
+  let service: SankeyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PsatSankeyService);
+    service = TestBed.inject(SankeyService);
   });
 
   it('should be created', () => {
