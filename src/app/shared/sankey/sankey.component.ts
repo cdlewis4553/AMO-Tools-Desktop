@@ -44,7 +44,7 @@ export class SankeyComponent implements OnInit {
   }
 
   getNodesAndLinks(){
-    let nodesAndLinks = this.sankeyService.getNodesAndLinks(this.sankeyData);
+    let nodesAndLinks = this.sankeyService.getNodesAndLinks(this.sankeyData, 'kW', this.sankeyColors);
     this.nodes = nodesAndLinks.nodes;
     this.links = nodesAndLinks.links;
   }
@@ -54,6 +54,7 @@ export class SankeyComponent implements OnInit {
   }
 
   createSankey() {
+    this.closeSankey();
     const sankeyLink = {
       value: this.nodes.map(node => node.value),
       source: this.links.map(link => link.source),
