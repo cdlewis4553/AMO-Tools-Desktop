@@ -1,9 +1,9 @@
 
-/* PSAT sankey overrides */
+/* PSAT, FSAT sankey overrides */
 /* =========================== */
 
-/*  Starting link color */
 app-psat-sankey > 
+app-sankey > 
 div.js-plotly-plot >
 div.plot-container.plotly >
 div.svg-container > 
@@ -15,9 +15,20 @@ path.sankey-link {
     fill-opacity: .9 !important;
 }
 
+app-fsat-sankey > 
+app-sankey > 
+div.js-plotly-plot >
+div.plot-container.plotly >
+div.svg-container > 
+svg.main-svg >
+g.sankey >
+g.sankey-links >
+path.sankey-link {
+    fill: #D4B904 !important;
+    fill-opacity: .9 !important;
+}
 
-/*  Motor loss link color */
-app-psat-sankey > 
+app-sankey > 
 div.js-plotly-plot >
 div.plot-container.plotly >
 div.svg-container > 
@@ -25,25 +36,23 @@ svg.main-svg >
 g.sankey >
 g.sankey-links >
 path.sankey-link:nth-child(3) {
-    fill: url(#psatLinkGradient) !important;
+    fill: url(#linkGradient) !important;
     fill-opacity: .9 !important;
 }
 
-/* Drive loss link color */
-app-psat-sankey > 
+app-sankey > 
 div.js-plotly-plot >
 div.plot-container.plotly >
 div.svg-container > 
 svg.main-svg >
 g.sankey >
 g.sankey-links >
-path.sankey-link:nth-child(4) {
-    fill: url(#psatLinkGradient) !important;
+path.sankey-link:nth-child(5) {
+    fill: url(#linkGradient) !important;
     fill-opacity: .9 !important;
 }
 
-/*  Ending Links color */
-app-psat-sankey > 
+app-sankey > 
 div.js-plotly-plot >
 div.plot-container.plotly >
 div.svg-container > 
@@ -51,6 +60,6 @@ svg.main-svg >
 g.sankey >
 g.sankey-links >
 path.sankey-link:nth-last-child(-n+2) {
-    fill: url(#psatLinkGradient) !important;
+    fill: url(#linkGradient) !important;
     fill-opacity: .9 !important;
 }
