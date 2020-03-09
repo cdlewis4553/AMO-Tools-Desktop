@@ -63,3 +63,21 @@ path.sankey-link:nth-last-child(-n+2) {
     fill: url(#linkGradient) !important;
     fill-opacity: .9 !important;
 }
+
+
+/* SSMT sankey overrides */
+/* =========================== */
+
+app-ssmt-sankey > 
+app-sankey > 
+div.js-plotly-plot >
+div.plot-container.plotly >
+div.svg-container > 
+svg.main-svg >
+g.sankey >
+g.sankey-links >
+path.sankey-link {
+    fill: #c77f0a !important;
+    fill-opacity: .9 !important;
+}
+

@@ -15,7 +15,7 @@ import { OperatingHoursModalModule } from '../../shared/operating-hours-modal/op
 import { PercentGraphModule } from '../../shared/percent-graph/percent-graph.module';
 import { ToastModule } from '../../shared/toast/toast.module';
 import { SharedPipesModule } from '../../shared/shared-pipes/shared-pipes.module';
-import { PsatSankeyModule } from '../../shared/psat-sankey/psat-sankey.module';
+import { PsatSankeyModule } from '../psat-sankey/psat-sankey.module';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { PsatSankeyModule } from '../../shared/psat-sankey/psat-sankey.module';
     PercentGraphModule,
     ToastModule,
     SharedPipesModule,
-    PsatSankeyModule
+    PsatSankeyModule,
   ],
   declarations: [
     ExploreOpportunitiesComponent, 

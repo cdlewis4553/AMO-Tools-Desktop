@@ -30,7 +30,7 @@ import { SharedPipesModule } from '../../shared/shared-pipes/shared-pipes.module
     ModalModule,
     OperatingHoursModalModule,
     ToastModule,
-    SharedPipesModule
+    SharedPipesModule,
   ],
   declarations: [
     ExploreOpportunitiesComponent,

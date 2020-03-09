@@ -31,7 +31,6 @@ import { SettingsModule } from '../settings/settings.module';
 import { CompareService } from './compare.service';
 import { PsatDiagramComponent } from './psat-diagram/psat-diagram.component';
 import { ExploreOpportunitiesModule } from './explore-opportunities/explore-opportunities.module';
-// import { OldPsatSankeyComponent } from './psat-sankey/psat-sankey.component';
 import { ModificationListComponent } from './modification-list/modification-list.component';
 import { AddModificationComponent } from './add-modification/add-modification.component';
 import { PsatReportSankeyComponent } from './psat-report/psat-report-sankey/psat-report-sankey.component';
@@ -55,8 +54,7 @@ import { SharedPipesModule } from '../shared/shared-pipes/shared-pipes.module';
 import { UnitConverterModule } from '../calculator/utilities/unit-converter/unit-converter.module';
 import { SystemAndEquipmentCurveModule } from '../calculator/system-and-equipment-curve/system-and-equipment-curve.module';
 import { SankeyModule } from '../shared/sankey/sankey.module';
-import { PsatSankeyComponent } from './psat-sankey/psat-sankey.component';
-// import { PsatSankeyComponent } from '../shared/psat-sankey/psat-sankey/psat-sankey.component';
+import { PsatSankeyModule } from './psat-sankey/psat-sankey.module';
 
 @NgModule({
   declarations: [
@@ -73,14 +71,11 @@ import { PsatSankeyComponent } from './psat-sankey/psat-sankey.component';
     OutputSummaryComponent,
     ModifyConditionsTabsComponent,
     PsatDiagramComponent,
-    // OldPsatSankeyComponent,
-    // PsatSankeyComponent,
     ModificationListComponent,
     AddModificationComponent,
     PsatReportSankeyComponent,
     PsatReportGraphsComponent,
     PsatReportGraphsPrintComponent,
-    PsatSankeyComponent,
     PsatReportGraphsPrintComponent
   ],
   exports: [
@@ -112,8 +107,8 @@ import { PsatSankeyComponent } from './psat-sankey/psat-sankey.component';
     SharedPipesModule,
     UnitConverterModule,
     SystemAndEquipmentCurveModule,
-    // PsatSankeyModule,
-    SankeyModule
+    SankeyModule,
+    PsatSankeyModule
   ],
   providers: [
     PsatService,

@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import { SankeyColors, SankeyData } from '../../shared/models/psat/sankey.model';
 import { ConvertUnitsService } from '../../shared/convert-units/convert-units.service';
 import { PsatService } from '../psat.service';
 import { PSAT } from '../../shared/models/psat';
 import { Settings } from '../../shared/models/settings';
+import { SankeyData, SankeyColors } from '../../shared/sankey/sankey.model';
 
 @Component({
   selector: 'app-psat-sankey',

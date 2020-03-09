@@ -46,6 +46,7 @@ import { TabsTooltipModule } from '../shared/tabs-tooltip/tabs-tooltip.module';
 import { ToastModule } from '../shared/toast/toast.module';
 import { SharedPipesModule } from '../shared/shared-pipes/shared-pipes.module';
 import { RouterModule } from '@angular/router';
+import { SankeyModule } from '../shared/sankey/sankey.module';
 
 @NgModule({
   imports: [
@@ -74,7 +75,8 @@ import { RouterModule } from '@angular/router';
     TabsTooltipModule,
     ToastModule,
     SharedPipesModule,
-    RouterModule
+    RouterModule,
+    SankeyModule
   ],
   declarations: [
     SsmtComponent,

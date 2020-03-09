@@ -2,24 +2,9 @@ import { Component, OnInit, Input, ViewChild, ElementRef, SimpleChanges } from '
 import { Settings } from '../../shared/models/settings';
 import { FSAT } from '../../shared/models/fans';
 import { ConvertUnitsService } from '../../shared/convert-units/convert-units.service';
-import * as d3 from 'd3';
 import { FsatService } from '../fsat.service';
-import { SankeyColors, SankeyData } from '../../shared/models/fsat/sankey.model';
+import { SankeyData, SankeyColors } from '../../shared/sankey/sankey.model';
 
-
-var svg;
-
-// use these values to alter label font position and size
-var width = 2650,
-  height = 1400,
-  labelFontSize = 28,
-  labelPadding = 4,
-  reportFontSize = 34,
-  reportPadding = 4,
-  topLabelPositionY = 150,
-  bottomLabelPositionY = 1250,
-  topReportPositionY = 125,
-  bottomReportPositionY = 1250;
 
 @Component({
   selector: 'app-fsat-sankey',
@@ -42,7 +27,6 @@ export class FsatSankeyComponent implements OnInit {
   @Input()
   isBaseline: boolean;
 
-  // @ViewChild('ngChart', { static: false }) ngChart: ElementRef;
   firstChange: boolean = true;
   
   // fsatCopy: FSAT;

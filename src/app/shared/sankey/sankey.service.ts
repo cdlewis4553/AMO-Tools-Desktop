@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SankeyData, SankeyNode, SankeyColors } from '../models/psat/sankey.model';
 import { DecimalPipe } from '@angular/common';
+import { SankeyData, SankeyNode, SankeyColors } from './sankey.model';
 
 @Injectable()
 export class SankeyService {

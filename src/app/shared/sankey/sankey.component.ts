@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { SankeyNode, SankeyData, SankeyColors } from '../models/psat/sankey.model';
+import { SankeyNode, SankeyData, SankeyColors } from './sankey.model';
 import * as Plotly from 'plotly.js';
 import { SankeyService } from './sankey.service';
 
