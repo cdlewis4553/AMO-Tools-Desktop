@@ -15,8 +15,6 @@ export class ExploreOpportunitiesSankeyComponent implements OnInit {
   modificationSankey: FSAT;
   @Input()
   settings: Settings;
-  @Input()
-  assessmentName: string;
   
   selectedView: string = 'Baseline';
   constructor() { }

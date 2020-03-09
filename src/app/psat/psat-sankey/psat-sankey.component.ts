@@ -93,8 +93,8 @@ export class PsatSankeyComponent implements OnInit {
   }
 
   calcLosses() {
-    var motorShaftPower;
-    var pumpShaftPower;
+    var motorShaftPower: number;
+    var pumpShaftPower: number;
     if (this.settings.powerMeasurement === "hp") {
       motorShaftPower = this.convertUnitsService
         .value(this.psatCopy.outputs.motor_shaft_power)
@@ -116,19 +116,22 @@ export class PsatSankeyComponent implements OnInit {
   }
 
   setSankeyData(){
-    let losses: Array<{label: string, value: number}> = new Array();
+    let losses: Array<{label: string, value: number, groupIndex: number}> = new Array();
     let outputEnergy: number = this.psatCopy.outputs.motor_power - this.motorLoss - this.pumpLoss - this.driveLoss;
     losses.push({
+      groupIndex: 0,
       value: this.motorLoss,
       label: 'Motor Losses'
     });
     if(this.driveLoss > 0){
       losses.push({
+        groupIndex: 1,
         value: this.driveLoss,
         label: 'Drive Losses'
       });
     }
     losses.push({
+      groupIndex: 2,
       value: this.pumpLoss,
       label: 'Pump Losses'
     });

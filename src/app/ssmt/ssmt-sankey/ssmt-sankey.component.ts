@@ -158,12 +158,12 @@ export class SsmtSankeyComponent implements OnInit {
       },
     );
 
-    this.sankeyData = {
-      energyInput: this.energyInput,
-      losses: losses,
-      additions: [],
-      outputEnergy: outputEnergy
-    }
+    // this.sankeyData = {
+    //   energyInput: this.energyInput,
+    //   losses: losses,
+    //   additions: [],
+    //   outputEnergy: outputEnergy
+    // }
 
   }
 

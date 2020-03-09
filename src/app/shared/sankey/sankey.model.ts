@@ -12,7 +12,11 @@ export interface SankeyNode {
 
 export interface SankeyData {
     energyInput: number,
-    losses: Array<{ label: string, value: number }>,
+    losses: Array<{
+        groupIndex: number,
+        label: string,
+        value: number
+    }>,
     additions: Array<{ label: string, value: number }>
     outputEnergy: number
 }
