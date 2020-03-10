@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { SankeyData, SankeyNode, SankeyColors } from './sankey.model';
+import * as _ from 'lodash';
 
 @Injectable()
 export class SankeyService {
@@ -29,6 +30,7 @@ export class SankeyService {
 
 
   getNodes(sankeyData: SankeyData, unit: string, sankeyColors: SankeyColors): Array<SankeyNode> {
+    sankeyData.losses = _.orderBy(sankeyData.losses, ['value'], ['desc']);
     let nodes: Array<SankeyNode> = new Array();
     //total percent energy remaining
     let totalEnergyRemaining: number = 100;
@@ -41,10 +43,11 @@ export class SankeyService {
     let xEnd: number = .85;
     //even steps from input to output
     //TODO: if numLosses > some number, use half and alternate y values +/-
-    let xStep: number = (xEnd - xStart) / (numLosses + 1);
+    let xStep: number = (xEnd - xStart - .05) / (numLosses + 1);
     //x position as we move through nodes with be updated by step.
     let x: number = xStart + xStep;
-    // let y: number = .6;
+    let y: number = .05;
+    let yConstant: number = .7;
     //index of node source
     let sourceIndex: number = 0;
     //start by adding energy input
@@ -52,7 +55,7 @@ export class SankeyService {
       name: "Energy Input " + this.decimalPipe.transform(sankeyData.energyInput, '1.0-0') + " " + unit,
       value: 100,
       x: xStart,
-      y: .6,
+      y: yConstant,
       source: sourceIndex,
       targets: [1],
       isConnector: true,
@@ -67,12 +70,13 @@ export class SankeyService {
       //subtract off the loss % from total remaining energy before adding connector
       totalEnergyRemaining = totalEnergyRemaining - (loss.value / sankeyData.energyInput * 100);
       //add connector
-      nodes = this.addConnector(nodes, totalEnergyRemaining, sourceIndex, sankeyColors, x, .6);
+      nodes = this.addConnector(nodes, totalEnergyRemaining, sourceIndex, sankeyColors, x, yConstant);
       //iterate index
       sourceIndex++;
       //put the loss halfway betwee connector for loss and next node
       let lossXValue: number = (x + (xStep / 2));
-      nodes = this.addLoss(nodes, loss, sankeyData.energyInput, sourceIndex, sankeyColors, unit, lossXValue, .2);
+      nodes = this.addLoss(nodes, loss, sankeyData.energyInput, sourceIndex, sankeyColors, unit, lossXValue, y);
+      y = y + .1
       //iterate index
       sourceIndex++;
       //update x position before continuing
@@ -85,7 +89,7 @@ export class SankeyService {
       name: "Useful Output " + this.decimalPipe.transform(sankeyData.outputEnergy, '1.0-0') + " " + unit,
       value: (sankeyData.outputEnergy / sankeyData.energyInput) * 100,
       x: xEnd,
-      y: .6,
+      y: yConstant,
       source: sourceIndex,
       targets: [],
       isConnector: false,

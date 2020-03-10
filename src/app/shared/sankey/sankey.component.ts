@@ -43,7 +43,7 @@ export class SankeyComponent implements OnInit {
     }
   }
 
-  getNodesAndLinks(){
+  getNodesAndLinks() {
     let nodesAndLinks = this.sankeyService.getNodesAndLinks(this.sankeyData, 'kW', this.sankeyColors);
     this.nodes = nodesAndLinks.nodes;
     this.links = nodesAndLinks.links;
@@ -63,7 +63,7 @@ export class SankeyComponent implements OnInit {
       line: {
         color: this.sankeyColors.nodeStartColor,
         width: 0
-      },
+      }
     };
 
     const sankeyData = {
@@ -77,11 +77,11 @@ export class SankeyComponent implements OnInit {
       // },
       arrangement: 'freeform',
       node: {
-        pad: 50,
-        line: {
-          color: this.sankeyColors.nodeStartColor,
-          width: 0
-        },
+        // pad: 50,
+        // line: {
+        //   color: this.sankeyColors.nodeStartColor,
+        //   width: 0
+        // },
         label: this.nodes.map(node => node.name),
         x: this.nodes.map(node => node.x),
         y: this.nodes.map(node => node.y),
@@ -116,9 +116,9 @@ export class SankeyComponent implements OnInit {
       margin: {
         l: 10,
         r: 10,
-        t: 60,
-        b: 60,
-        pad: 20,
+        // t: 90,
+        // b: 90,
+        // pad: 20,
       }
     };
 
