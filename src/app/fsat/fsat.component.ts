@@ -72,10 +72,11 @@ export class FsatComponent implements OnInit {
   calcTabSubscription: Subscription;
 
 
-  fsatOptions: Array<any>;
-  fsatOptionsLength: number;
-  fsat1: FSAT;
-  fsat2: FSAT;
+  // fsatOptions: Array<any>;
+  // fsatOptionsLength: number;
+  // fsat1: FSAT;
+  // fsat2: FSAT;
+  fsatSankey: FSAT;
   //exploreOppsToast: boolean = false;
   toastData: { title: string, body: string, setTimeoutVal: number } = { title: '', body: '', setTimeoutVal: undefined };
   showToast: boolean = false;
@@ -117,7 +118,6 @@ export class FsatComponent implements OnInit {
           this.compareService.setCompareVals(this._fsat);
         }
         this.getSettings();
-        this.initSankeyList();
         let tmpTab: string = this.assessmentService.tab;
         if (tmpTab) {
           this.fsatService.mainTab.next(tmpTab);
@@ -128,6 +128,9 @@ export class FsatComponent implements OnInit {
       this.mainTab = val;
       this.getContainerHeight();
       this.checkTutorials();
+      if(val == 'sankey'){
+        this.fsatSankey = this._fsat;
+      }
     });
     this.stepTabSub = this.fsatService.stepTab.subscribe(val => {
       this.stepTab = val;
@@ -208,20 +211,6 @@ export class FsatComponent implements OnInit {
       }
     }
   }
-
-  initSankeyList() {
-    this.fsatOptions = new Array<any>();
-    this.fsatOptions.push({ name: 'Baseline', fsat: this._fsat });
-    this.fsat1 = this.fsatOptions[0];
-    if (this._fsat.modifications) {
-      this._fsat.modifications.forEach(mod => {
-        this.fsatOptions.push({ name: mod.fsat.name, fsat: mod.fsat });
-      });
-      this.fsat2 = this.fsatOptions[1];
-    }
-    this.fsatOptionsLength = this.fsatOptions.length;
-  }
-
 
   getContainerHeight() {
     if (this.content) {

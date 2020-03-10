@@ -61,7 +61,6 @@ export class FsatSankeyComponent implements OnInit {
   }
 
   setCopy(){
-    debugger
     this.fsatCopy = JSON.parse(JSON.stringify(this.fsat));
   }
 
