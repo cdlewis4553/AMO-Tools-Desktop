@@ -30,11 +30,11 @@ export class FsatSankeyComponent implements OnInit {
     gradientStartColor: '#D4B904',
     gradientEndColor: '#E8D952',
     nodeStartColor: 'rgba(214, 185, 0, 1)',
-    nodeArrowColor:'rgba(232, 217, 82, 1)'
+    nodeArrowColor: 'rgba(232, 217, 82, 1)'
   }
-  
+
   sankeyData: SankeyData;
-  
+
   constructor(private convertUnitsService: ConvertUnitsService, private fsatService: FsatService) { }
 
   ngOnInit() {
@@ -60,11 +60,11 @@ export class FsatSankeyComponent implements OnInit {
     this.setSankeyData();
   }
 
-  setCopy(){
+  setCopy() {
     this.fsatCopy = JSON.parse(JSON.stringify(this.fsat));
   }
 
-  setOutputs(){
+  setOutputs() {
     this.fsatCopy.outputs = this.fsatService.getResults(this.fsatCopy, this.isBaseline, this.settings);
   }
 
@@ -80,15 +80,15 @@ export class FsatSankeyComponent implements OnInit {
     this.motorLoss = this.fsatCopy.outputs.motorPower - this.fsatCopy.outputs.motorShaftPower;
   }
 
-  setSankeyData(){
-    let losses: Array<{label: string, value: number, groupIndex: number}> = new Array();
+  setSankeyData() {
+    let losses: Array<{ label: string, value: number, groupIndex: number }> = new Array();
     let outputEnergy: number = this.fsatCopy.outputs.motorPower - this.motorLoss - this.fanLoss - this.driveLoss;
     losses.push({
       groupIndex: 0,
       value: this.motorLoss,
       label: 'Motor Losses'
     });
-    if(this.driveLoss > 0){
+    if (this.driveLoss > 0) {
       losses.push({
         groupIndex: 1,
         value: this.driveLoss,
@@ -104,7 +104,10 @@ export class FsatSankeyComponent implements OnInit {
       energyInput: this.fsatCopy.outputs.motorPower,
       losses: losses,
       additions: [],
-      outputEnergy: outputEnergy
+      outputEnergy: [{
+        label: 'Output Energy',
+        value: outputEnergy
+      }]
     }
   }
 

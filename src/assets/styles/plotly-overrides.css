@@ -1,6 +1,6 @@
 
 /* PSAT, FSAT sankey overrides */
-/* =========================== */
+/* =========================== *
 
 app-psat-sankey > 
 app-sankey > 
@@ -66,7 +66,7 @@ path.sankey-link:nth-last-child(-n+2) {
 
 
 /* SSMT sankey overrides */
-/* =========================== */
+/* =========================== *
 
 app-ssmt-sankey > 
 app-sankey > 
@@ -80,4 +80,4 @@ path.sankey-link {
     fill: #c77f0a !important;
     fill-opacity: .9 !important;
 }
-
+*/

@@ -7,7 +7,8 @@ export interface SankeyNode {
     source: number,
     targets: number[],
     isConnector: boolean,
-    id?: string
+    id?: string,
+    width: number
 }
 
 export interface SankeyData {
@@ -18,7 +19,7 @@ export interface SankeyData {
         value: number
     }>,
     additions: Array<{ label: string, value: number }>
-    outputEnergy: number
+    outputEnergy: Array<{ label: string, value: number }>
 }
 
 export interface SankeyColors {

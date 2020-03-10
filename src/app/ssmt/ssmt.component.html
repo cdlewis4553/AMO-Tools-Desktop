@@ -70,8 +70,8 @@
     [ngStyle]="{'height.px': containerHeight}">
     <div class="sankey-padding w-100">
       <div class="sankey-padding w-100">
-          <app-ssmt-sankey [ssmt]="_ssmt" [settings]="settings" [assessment]="assessment"
-          [isBaseline]="_ssmt.name == 'Baseline'"></app-ssmt-sankey>
+        <app-ssmt-sankey [baselineSSMT]="_ssmt" [sankeySSMT]="_ssmt" [settings]="settings" [isBaseline]="true">
+        </app-ssmt-sankey>
       </div>
     </div>
   </div>

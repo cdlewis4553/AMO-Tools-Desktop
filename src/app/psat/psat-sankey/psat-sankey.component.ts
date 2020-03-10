@@ -139,7 +139,10 @@ export class PsatSankeyComponent implements OnInit {
       energyInput: this.psatCopy.outputs.motor_power,
       losses: losses,
       additions: [],
-      outputEnergy: outputEnergy
+      outputEnergy: [{
+        label: 'Output Energy',
+        value: outputEnergy
+      }]
     }
   }
 }

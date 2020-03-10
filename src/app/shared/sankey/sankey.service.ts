@@ -47,7 +47,7 @@ export class SankeyService {
     //x position as we move through nodes with be updated by step.
     let x: number = xStart + xStep;
     let y: number = .05;
-    let yConstant: number = .7;
+    let yConstant: number = .5;
     //index of node source
     let sourceIndex: number = 0;
     //start by adding energy input
@@ -60,7 +60,8 @@ export class SankeyService {
       targets: [1],
       isConnector: true,
       nodeColor: sankeyColors.nodeStartColor,
-      id: 'originConnector'
+      id: 'originConnector',
+      width: 1
     });
     sourceIndex++;
 
@@ -70,7 +71,7 @@ export class SankeyService {
       //subtract off the loss % from total remaining energy before adding connector
       totalEnergyRemaining = totalEnergyRemaining - (loss.value / sankeyData.energyInput * 100);
       //add connector
-      nodes = this.addConnector(nodes, totalEnergyRemaining, sourceIndex, sankeyColors, x, yConstant);
+      nodes = this.addConnector(nodes, totalEnergyRemaining, sourceIndex, sankeyColors, x, yConstant, 2);
       //iterate index
       sourceIndex++;
       //put the loss halfway betwee connector for loss and next node
@@ -85,23 +86,33 @@ export class SankeyService {
     //TODO: iterate additions?
 
     //finish by adding output node
-    nodes.push({
-      name: "Useful Output " + this.decimalPipe.transform(sankeyData.outputEnergy, '1.0-0') + " " + unit,
-      value: (sankeyData.outputEnergy / sankeyData.energyInput) * 100,
-      x: xEnd,
-      y: yConstant,
-      source: sourceIndex,
-      targets: [],
-      isConnector: false,
-      nodeColor: sankeyColors.nodeArrowColor,
-      id: 'usefulOutput'
+    if (sankeyData.outputEnergy.length != 1) {
+      let sumOutputEnergy: number = _.sumBy(sankeyData.outputEnergy, 'value');
+      totalEnergyRemaining = totalEnergyRemaining - (sumOutputEnergy / sankeyData.energyInput * 100);
+      //add connector
+      nodes = this.addConnector(nodes, totalEnergyRemaining, sourceIndex, sankeyColors, x, yConstant, sankeyData.outputEnergy.length + 1);
+      //iterate index
+      sourceIndex++;
+    }
+
+    let outputEnergyYStep: number = 1 / (sankeyData.outputEnergy.length + 1);
+    let outputEnergyY: number = 1 / (sankeyData.outputEnergy.length + 1);
+    sankeyData.outputEnergy.forEach(output => {
+      this.addOutputEnergy(nodes, output, sankeyData.energyInput, sourceIndex, sankeyColors, 'kW', xEnd, outputEnergyY);
+      outputEnergyY = outputEnergyY + outputEnergyYStep;
+      sourceIndex++;
     });
     console.log(nodes);
     return nodes;
   }
 
   //connector node
-  addConnector(nodes: Array<SankeyNode>, remainingValue: number, sourceIndex: number, sankeyColors: SankeyColors, x: number, y: number): Array<SankeyNode> {
+  addConnector(nodes: Array<SankeyNode>, remainingValue: number, sourceIndex: number, sankeyColors: SankeyColors, x: number, y: number, numTargets: number): Array<SankeyNode> {
+    let targets: Array<number> = [(sourceIndex + numTargets)];
+    for (let i = sourceIndex + 1; i < (sourceIndex + numTargets); i++) {
+      targets.push(i);
+    }
+
     //not sure why the targets have to be in this order but it works..
     nodes.push({
       name: "",
@@ -109,10 +120,11 @@ export class SankeyService {
       x: x,
       y: y,
       source: sourceIndex,
-      targets: [(sourceIndex + 2), (sourceIndex + 1)],
+      targets: targets,
       isConnector: true,
       nodeColor: sankeyColors.nodeStartColor,
-      id: 'inputConnector'
+      id: 'inputConnector',
+      width: 1
     });
     return nodes;
   }
@@ -128,8 +140,25 @@ export class SankeyService {
       targets: [],
       isConnector: false,
       nodeColor: sankeyColors.nodeArrowColor,
-      id: 'loss'
+      id: 'loss',
+      width: 1
     });
     return nodes;
+  }
+
+  //add output energy
+  addOutputEnergy(nodes: Array<SankeyNode>, outputEnergy: { label: string, value: number }, energyInput: number, sourceIndex: number, sankeyColors: SankeyColors, unit: string, x: number, y: number) {
+    nodes.push({
+      name: outputEnergy.label + " " + this.decimalPipe.transform(outputEnergy.value, '1.0-0') + " " + unit,
+      value: (outputEnergy.value / energyInput) * 100,
+      x: x,
+      y: y,
+      source: sourceIndex,
+      targets: [],
+      isConnector: false,
+      nodeColor: sankeyColors.nodeArrowColor,
+      id: 'usefulOutput',
+      width: 1
+    });
   }
 }

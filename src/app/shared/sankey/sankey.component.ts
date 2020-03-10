@@ -60,10 +60,10 @@ export class SankeyComponent implements OnInit {
       source: this.links.map(link => link.source),
       target: this.links.map(link => link.target),
       hoverinfo: 'none',
-      line: {
-        color: this.sankeyColors.nodeStartColor,
-        width: 0
-      }
+      // line: {
+      //   color: this.sankeyColors.nodeStartColor,
+      //   width: 10
+      // }
     };
 
     const sankeyData = {
@@ -77,10 +77,11 @@ export class SankeyComponent implements OnInit {
       // },
       arrangement: 'freeform',
       node: {
+        thickness: 14,
         // pad: 50,
         // line: {
         //   color: this.sankeyColors.nodeStartColor,
-        //   width: 0
+        //   width: 10
         // },
         label: this.nodes.map(node => node.name),
         x: this.nodes.map(node => node.x),
@@ -128,8 +129,8 @@ export class SankeyComponent implements OnInit {
     };
 
     Plotly.react(this.sankeyDiagram.nativeElement, [sankeyData], layout, config);
-    this.addGradientElement();
-    this.buildSvgArrows();
+    // this.addGradientElement();
+    // this.buildSvgArrows();
   }
 
   buildConnectors() {
