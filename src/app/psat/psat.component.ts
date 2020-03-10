@@ -47,10 +47,11 @@ export class PsatComponent implements OnInit {
 
   //used for sankey
   //TODO: move this and sankey choosing logic oput of this component
-  psatOptions: Array<any>;
-  psatOptionsLength: number;
-  psat1: PSAT;
-  psat2: PSAT;
+  // psatOptions: Array<any>;
+  // psatOptionsLength: number;
+  // psat1: PSAT;
+  // psat2: PSAT;
+  sankeyPsat: PSAT;
 
   _psat: PSAT;
   settings: Settings;
@@ -111,7 +112,6 @@ export class PsatComponent implements OnInit {
           this.modificationExists = false;
         }
         this.getSettings();
-        this.initSankeyList();
       })
       let tmpTab = this.assessmentService.getTab();
       if (tmpTab) {
@@ -126,6 +126,8 @@ export class PsatComponent implements OnInit {
           if (this.currentTab != 'explore-opportunities' && this.currentTab != 'modify-conditions') {
             this.psatTabService.secondaryTab.next('explore-opportunities');
           }
+        } else if (this.mainTab == 'sankey') {
+          this.sankeyPsat = this._psat;
         }
         this.checkTutorials();
         this.getContainerHeight();
@@ -228,19 +230,6 @@ export class PsatComponent implements OnInit {
     }
   }
 
-  initSankeyList() {
-    this.psatOptions = new Array<any>();
-    this.psatOptions.push({ name: 'Baseline', psat: this._psat });
-    this.psat1 = this.psatOptions[0];
-    if (this._psat.modifications) {
-      this._psat.modifications.forEach(mod => {
-        this.psatOptions.push({ name: mod.psat.name, psat: mod.psat });
-      })
-      this.psat2 = this.psatOptions[1];
-      this.psatOptionsLength = this.psatOptions.length;
-    }
-  }
-
   getSettings() {
     //get assessment settings
     let tmpSettings: Settings = this.settingsDbService.getByAssessmentId(this.assessment, true);
@@ -310,7 +299,6 @@ export class PsatComponent implements OnInit {
     let tmpFieldDataForm: FormGroup = this.fieldDataService.getFormFromObj(this._psat.inputs, true);
     if ((tmpPumpFluidForm.valid && tmpMotorForm.valid && tmpFieldDataForm.valid) || this.modificationExists) {
       this._psat.setupDone = true;
-      this.initSankeyList();
     } else {
       this._psat.setupDone = false;
     }

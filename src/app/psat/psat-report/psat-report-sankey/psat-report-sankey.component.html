@@ -14,8 +14,7 @@
         }">Cost Savings: {{ psat1CostSavings | currency: "USD":"symbol":"1.0-0" }}/yr</div>
       </div>
       <div class="w-75">
-        <app-psat-sankey [psat]="psat1" [location]="'baseline'" [assessmentName]="assessmentName" [settings]="settings"
-          [isBaseline]="true"></app-psat-sankey>
+        <app-psat-sankey [psat]="psat1" [settings]="settings" [isBaseline]="psat1.name == 'Baseline'"></app-psat-sankey>
       </div>
     </div>
     <hr>
@@ -33,8 +32,7 @@
         }">Cost Savings: {{ psat2CostSavings | currency: "USD":"symbol":"1.0-0" }}/yr</div>
       </div>
       <div class="w-75">
-        <app-psat-sankey [psat]="psat2" [location]="'modification'" [assessmentName]="assessmentName"
-          [settings]="settings" [isBaseline]="false"></app-psat-sankey>
+        <app-psat-sankey [psat]="psat2" [settings]="settings" [isBaseline]="psat2.name == 'Baseline'"></app-psat-sankey>
       </div>
     </div>
   </div>

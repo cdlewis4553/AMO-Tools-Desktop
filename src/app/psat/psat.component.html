@@ -78,15 +78,17 @@
   <div *ngIf="mainTab == 'sankey'" class="mx-auto d-flex flex-column scroll-item w-100"
     [ngStyle]="{'height.px': containerHeight}">
     <div class="p-1 mx-auto">
-      <div class="form-group" *ngIf="psatOptionsLength > 1">
-        <select name="psatSelect" class="form-control mx-auto" id="psatSelect" [(ngModel)]="psat1">
-          <option *ngFor="let psat of psatOptions" [ngValue]="psat">{{psat.name}}</option>
+      <div class="form-group" *ngIf="_psat.modifications.length > 0">
+        <select name="psatSelect" class="form-control mx-auto" id="psatSelect" [(ngModel)]="sankeyPsat">
+          <option [ngValue]="_psat">Baseline</option>
+          <option *ngFor="let modification of _psat.modifications" [ngValue]="modification.psat">
+            {{modification.psat.name}}</option>
         </select>
       </div>
     </div>
     <div class="sankey-padding w-100">
-      <app-psat-sankey [psat]="psat1.psat" [settings]="settings"
-        [isBaseline]="psat1.psat.name == 'Baseline'"></app-psat-sankey>
+      <app-psat-sankey [psat]="sankeyPsat" [settings]="settings" [isBaseline]="sankeyPsat.name == 'Baseline'">
+      </app-psat-sankey>
     </div>
   </div>
   <!--end sankey-->
@@ -94,8 +96,8 @@
   <!--report-->
   <div class="row justify-content-center report-container" *ngIf="mainTab == 'report'">
     <div class="col-11 report-column">
-      <app-psat-report [settings]="settings" [assessment]="assessment" [inPsat]="true"
-        (closeReport)="closeReport()" (exportData)="exportData()" [containerHeight]="containerHeight"></app-psat-report>
+      <app-psat-report [settings]="settings" [assessment]="assessment" [inPsat]="true" (closeReport)="closeReport()"
+        (exportData)="exportData()" [containerHeight]="containerHeight"></app-psat-report>
     </div>
   </div>
   <!--end report-->

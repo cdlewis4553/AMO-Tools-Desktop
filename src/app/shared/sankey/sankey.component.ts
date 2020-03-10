@@ -71,10 +71,10 @@ export class SankeyComponent implements OnInit {
       orientation: "h",
       valuesuffix: "%",
       ids: this.nodes.map(node => node.id),
-      textfont: {
-        color: 'rgba(0, 0, 0)',
-        size: 16
-      },
+      // textfont: {
+      //   color: 'rgba(0, 0, 0)',
+      //   size: 12
+      // },
       arrangement: 'freeform',
       node: {
         pad: 50,
@@ -100,7 +100,7 @@ export class SankeyComponent implements OnInit {
     };
 
     const layout = {
-      title: "",
+      // title: "",
       autosize: true,
       yaxis: {
         automargin: true,
@@ -108,12 +108,17 @@ export class SankeyComponent implements OnInit {
       xaxis: {
         automargin: true,
       },
+      font: {
+        size: 12
+      },
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
       margin: {
-        l: 50,
-        t: 100,
-        pad: 300,
+        l: 10,
+        r: 10,
+        t: 60,
+        b: 60,
+        pad: 20,
       }
     };
 
