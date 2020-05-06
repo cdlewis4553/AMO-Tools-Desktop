@@ -38,6 +38,7 @@ export class SsmtDiagramTabComponent implements OnInit {
 
   setDiagramPixelWidth: number = 900;
   baselineResults: SSMTOutput;
+  showHelp: boolean = true;
   constructor(private ssmtService: SsmtService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -106,5 +107,17 @@ export class SsmtDiagramTabComponent implements OnInit {
 
   scaleDown() {
     this.scaleValue = this.scaleValue - 5;
+  }
+
+  toggleCollapseHelp() {
+    this.showHelp = !this.showHelp;
+    if (this.showHelp) {
+      this.setDiagramPixelWidth = 900;
+    } else {
+      this.setDiagramPixelWidth = 1800;
+    }
+    setTimeout(() => {
+      this.setScaleValue();
+    }, 1000)
   }
 }

@@ -83,3 +83,13 @@
   .fa .fa-serch-plus, .fa .fa-search-minus{
       font-size: x-large;
   }
+
+
+  .collapse-help{
+    padding: 5px;
+    background-color: white;
+    font-weight: bold;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
