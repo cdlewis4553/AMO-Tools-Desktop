@@ -157,7 +157,7 @@ a:not([href]):not([tabindex]).disabled-link:hover{
 .phast .form-control.indicate-different, 
 .form-group.indicate-different .input-group,
 .form-group.indicate-different > .form-control   {
-    border: #007bff solid 2px;
+    /* border: #007bff solid 2px; */
     /* box-shadow: 0px 0px 1px #007bff; */
 }
 
@@ -186,7 +186,7 @@ a:not([href]):not([tabindex]).disabled-link:hover{
 .form-group.indicate-different.invalid > .form-control ,
 .form-group.error.invalid > .form-control,
 .form-group.indicate-different.error.invalid > .form-control  {
-    border: red solid 2px;
+    /* border: red solid 2px; */
     /* box-shadow: 0px 0px 1px red; */
 }
 
@@ -202,7 +202,7 @@ a:not([href]):not([tabindex]).disabled-link:hover{
 .form-group.indicate-different.error .input-group,
 .form-group.error > .form-control,
 .form-group.indicate-different.error > .form-control {
-    border: orange solid 2px;
+    /* border: orange solid 2px; */
     /* box-shadow: 0px 0px 1px orange; */
 }
 
