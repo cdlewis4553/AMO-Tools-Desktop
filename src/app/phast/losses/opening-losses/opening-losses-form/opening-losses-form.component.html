@@ -46,7 +46,7 @@
         <span *ngIf="settings.unitsOfMeasure == 'Imperial'" class="input-group-addon units">in</span>
         <span *ngIf="settings.unitsOfMeasure == 'Metric'" class="input-group-addon units">mm</span>
       </div>
-      <span class="alert-warning pull-right small" *ngIf="warnings.lengthWarning !== null">{{warnings.lengthWarning}}</span>
+      <!-- <span class="alert-warning pull-right small" *ngIf="warnings.lengthWarning !== null">{{warnings.lengthWarning}}</span> -->
     </div>
 
     <div class="form-group" *ngIf="openingLossesForm.controls.openingType.value != 'Round'">
