@@ -14,6 +14,7 @@ import { ConvertFanAnalysisService } from '../calculator/fans/fan-analysis/conve
 
 
 declare var fanAddon: any;
+declare var Module: any;
 
 @Injectable()
 export class FsatService {
@@ -44,7 +45,7 @@ export class FsatService {
   }
 
   test() {
-    console.log(fanAddon);
+    // console.log(fanAddon);
   }
 
   fan203(input: Fan203Inputs, settings: Settings): Fan203Results {
@@ -56,9 +57,15 @@ export class FsatService {
     return results;
   }
 
+  //GAS DENSITY CALCS
   getBaseGasDensityDewPoint(inputs: BaseGasDensity, settings: Settings): number {
     inputs = this.convertFanAnalysisService.convertGasDensityForCalculations(inputs, settings);
-    let result: number = fanAddon.getBaseGasDensityDewPoint(inputs);
+    let gasType = this.getGasTypeEnum(inputs.gasType);
+    let inputType = this.getBasGensityInputTypeEnum(inputs.inputType);
+    let dewPointInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.dewPoint, gasType, inputType, inputs.specificGravity);
+    let result: number = dewPointInstance.getGasDensity();
+    dewPointInstance.delete();
+    // let result: number = fanAddon.getBaseGasDensityDewPoint(inputs);
     if (settings.densityMeasurement !== 'lbscf') {
       result = this.convertUnitsService.value(result).from('lbscf').to(settings.densityMeasurement);
     }
@@ -67,7 +74,12 @@ export class FsatService {
 
   getBaseGasDensityRelativeHumidity(inputs: BaseGasDensity, settings: Settings): number {
     inputs = this.convertFanAnalysisService.convertGasDensityForCalculations(inputs, settings);
-    let result: number = fanAddon.getBaseGasDensityRelativeHumidity(inputs);
+    let gasType = this.getGasTypeEnum(inputs.gasType);
+    let inputType = this.getBasGensityInputTypeEnum(inputs.inputType);
+    // let result: number = fanAddon.getBaseGasDensityRelativeHumidity(inputs);
+    let relativeHumidityInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.relativeHumidity, gasType, inputType, inputs.specificGravity);
+    let result: number = relativeHumidityInstance.getGasDensity();
+    relativeHumidityInstance.delete();
     if (settings.densityMeasurement !== 'lbscf') {
       result = this.convertUnitsService.value(result).from('lbscf').to(settings.densityMeasurement);
     }
@@ -76,11 +88,35 @@ export class FsatService {
 
   getBaseGasDensityWetBulb(inputs: BaseGasDensity, settings: Settings): number {
     inputs = this.convertFanAnalysisService.convertGasDensityForCalculations(inputs, settings);
-    let result: number = fanAddon.getBaseGasDensityWetBulb(inputs);
+    let gasType = this.getGasTypeEnum(inputs.gasType);
+    let inputType = this.getBasGensityInputTypeEnum(inputs.inputType);
+    // let result: number = fanAddon.getBaseGasDensityWetBulb(inputs);
+    let wetBulbInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.wetBulbTemp, gasType, inputType, inputs.specificGravity, inputs.specificHeatGas);
+    let result: number = wetBulbInstance.getGasDensity();
+    wetBulbInstance.delete();
     if (settings.densityMeasurement !== 'lbscf') {
       result = this.convertUnitsService.value(result).from('lbscf').to(settings.densityMeasurement);
     }
     return result;
+  }
+
+  getGasTypeEnum(type: string) {
+    if (type == 'relativeHumidity') {
+      return Module.BaseGasDensityInputType.RelativeHumidity;
+    } else if (type == 'wetBulb') {
+      return Module.BaseGasDensityInputType.WetBulbTemp;
+    } else if (type == 'dewPoint') {
+      return Module.BaseGasDensityInputType.DewPoint;
+    } else if (type == 'custom') {
+      return;
+    }
+  }
+  getBasGensityInputTypeEnum(type: string) {
+    if (type == 'AIR') {
+      return Module.GasType.AIR;
+    } else if (type == 'OTHER') {
+      return Module.GasType.OTHER;
+    }
   }
 
   getVelocityPressureData(inputs: Plane, settings: Settings): { pv3: number, percent75Rule: number } {
@@ -100,9 +136,9 @@ export class FsatService {
     return results;
   }
 
-  fanCurve() {
-    return fanAddon.fanCurve();
-  }
+  // fanCurve() {
+  //   return fanAddon.fanCurve();
+  // }
 
   getInput(fsat: FSAT, settings: Settings) {
     let input: FsatInput = {
