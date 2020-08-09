@@ -62,9 +62,12 @@ export class FsatService {
     inputs = this.convertFanAnalysisService.convertGasDensityForCalculations(inputs, settings);
     let gasType = this.getGasTypeEnum(inputs.gasType);
     let inputType = this.getBasGensityInputTypeEnum(inputs.inputType);
-    let dewPointInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.dewPoint, gasType, inputType, inputs.specificGravity);
-    let result: number = dewPointInstance.getGasDensity();
-    dewPointInstance.delete();
+    let result: number = 0;
+    if (inputs.dryBulbTemp != undefined && inputs.staticPressure != undefined && inputs.barometricPressure != undefined && inputs.dewPoint != undefined && gasType != undefined && inputType != undefined && inputs.specificGravity != undefined) {
+      let dewPointInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.dewPoint, gasType, inputType, inputs.specificGravity);
+      result = dewPointInstance.getGasDensity();
+      dewPointInstance.delete();
+    }
     // let result: number = fanAddon.getBaseGasDensityDewPoint(inputs);
     if (settings.densityMeasurement !== 'lbscf') {
       result = this.convertUnitsService.value(result).from('lbscf').to(settings.densityMeasurement);
@@ -77,9 +80,12 @@ export class FsatService {
     let gasType = this.getGasTypeEnum(inputs.gasType);
     let inputType = this.getBasGensityInputTypeEnum(inputs.inputType);
     // let result: number = fanAddon.getBaseGasDensityRelativeHumidity(inputs);
-    let relativeHumidityInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.relativeHumidity, gasType, inputType, inputs.specificGravity);
-    let result: number = relativeHumidityInstance.getGasDensity();
-    relativeHumidityInstance.delete();
+    let result: number = 0;
+    if (inputs.dryBulbTemp != undefined && inputs.staticPressure != undefined && inputs.barometricPressure != undefined && inputs.relativeHumidity != undefined && gasType != undefined && inputType != undefined && inputs.specificGravity != undefined) {
+      let relativeHumidityInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.relativeHumidity, gasType, inputType, inputs.specificGravity);
+      result = relativeHumidityInstance.getGasDensity();
+      relativeHumidityInstance.delete();
+    }
     if (settings.densityMeasurement !== 'lbscf') {
       result = this.convertUnitsService.value(result).from('lbscf').to(settings.densityMeasurement);
     }
@@ -91,16 +97,20 @@ export class FsatService {
     let gasType = this.getGasTypeEnum(inputs.gasType);
     let inputType = this.getBasGensityInputTypeEnum(inputs.inputType);
     // let result: number = fanAddon.getBaseGasDensityWetBulb(inputs);
-    let wetBulbInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.wetBulbTemp, gasType, inputType, inputs.specificGravity, inputs.specificHeatGas);
-    let result: number = wetBulbInstance.getGasDensity();
-    wetBulbInstance.delete();
+    let result: number = 0;
+    if (inputs.dryBulbTemp != undefined && inputs.staticPressure != undefined && inputs.barometricPressure != undefined && inputs.wetBulbTemp != undefined && gasType != undefined && inputType != undefined && inputs.specificGravity != undefined && inputs.specificHeatGas != undefined) {
+      let wetBulbInstance = new Module.BaseGasDensity(inputs.dryBulbTemp, inputs.staticPressure, inputs.barometricPressure, inputs.wetBulbTemp, gasType, inputType, inputs.specificGravity, inputs.specificHeatGas);
+      result = wetBulbInstance.getGasDensity();
+      console.log(result);
+      wetBulbInstance.delete();
+    }
     if (settings.densityMeasurement !== 'lbscf') {
       result = this.convertUnitsService.value(result).from('lbscf').to(settings.densityMeasurement);
     }
     return result;
   }
 
-  getGasTypeEnum(type: string) {
+  getBasGensityInputTypeEnum(type: string) {
     if (type == 'relativeHumidity') {
       return Module.BaseGasDensityInputType.RelativeHumidity;
     } else if (type == 'wetBulb') {
@@ -111,7 +121,7 @@ export class FsatService {
       return;
     }
   }
-  getBasGensityInputTypeEnum(type: string) {
+  getGasTypeEnum(type: string) {
     if (type == 'AIR') {
       return Module.GasType.AIR;
     } else if (type == 'OTHER') {
