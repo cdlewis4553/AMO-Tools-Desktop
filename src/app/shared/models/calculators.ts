@@ -50,6 +50,15 @@ export interface HeadToolSuction {
     dischargeLineLossCoefficients: number;
 }
 
+export interface HeadToolResults {
+    differentialElevationHead: number,
+    differentialPressureHead: number,
+    differentialVelocityHead: number,
+    estimatedSuctionFrictionHead: number,
+    estimatedDischargeFrictionHead: number,
+    pumpHead: number
+}
+
 
 export interface HeadTool {
     specificGravity: number;

@@ -4,7 +4,7 @@ import { PSAT } from '../../../shared/models/psat';
 import { IndexedDbService } from '../../../indexedDb/indexed-db.service';
 import { Settings } from '../../../shared/models/settings';
 import { FormGroup } from '@angular/forms';
-import { Calculator } from '../../../shared/models/calculators';
+import { Calculator, HeadToolResults } from '../../../shared/models/calculators';
 import { CalculatorDbService } from '../../../indexedDb/calculator-db.service';
 import { SettingsDbService } from '../../../indexedDb/settings-db.service';
 import { HeadToolService } from './head-tool.service';
@@ -36,7 +36,7 @@ export class HeadToolComponent implements OnInit {
 
   headerHeight: number;
 
-  results: any = {
+  results: HeadToolResults = {
     differentialElevationHead: 0.0,
     differentialPressureHead: 0.0,
     differentialVelocityHead: 0.0,
