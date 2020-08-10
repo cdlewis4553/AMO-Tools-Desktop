@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import * as _ from 'lodash';
 import { pumpTypesConstant, motorEfficiencyConstants, driveConstants } from '../psat/psatConstants';
+import { FanTypes } from '../fsat/fanOptions';
 //wasm module
 declare var Module: any;
 
@@ -47,5 +48,29 @@ export class SuiteApiEnumHelperService {
     } else {
       return Module.LoadEstimationMethod.CURRENT;
     }
+  }
+
+  getBasGensityInputTypeEnum(type: string) {
+    if (type == 'relativeHumidity') {
+      return Module.BaseGasDensityInputType.RelativeHumidity;
+    } else if (type == 'wetBulb') {
+      return Module.BaseGasDensityInputType.WetBulbTemp;
+    } else if (type == 'dewPoint') {
+      return Module.BaseGasDensityInputType.DewPoint;
+    } else if (type == 'custom') {
+      return;
+    }
+  }
+  getGasTypeEnum(type: string) {
+    if (type == 'AIR') {
+      return Module.GasType.AIR;
+    } else if (type == 'OTHER') {
+      return Module.GasType.OTHER;
+    }
+  }
+
+  getFanTypeEnum(fanType: number){
+    let fanTypeConstant = _.find(FanTypes, (type) => {return type.value == fanType});
+    return fanTypeConstant.enumVal;
   }
 }

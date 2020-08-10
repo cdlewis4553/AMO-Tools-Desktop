@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Fan203Inputs, FanRatedInfo, BaseGasDensity, Plane, PlaneData, Fan203Results, PlaneResults, PlaneResult } from '../../../shared/models/fans';
 import { Settings } from '../../../shared/models/settings';
 import { ConvertUnitsService } from '../../../shared/convert-units/convert-units.service';
-declare var fanAddon: any;
+import { FansApiService } from '../../../suite-api/fans-api.service';
 
 @Injectable()
 export class ConvertFanAnalysisService {
 
-  constructor(private convertUnitsService: ConvertUnitsService) { }
+  constructor(private convertUnitsService: ConvertUnitsService, private fansApiService: FansApiService) { }
 
   fan203(input: Fan203Inputs, settings: Settings): Fan203Results {
     let inputCpy: Fan203Inputs = JSON.parse(JSON.stringify(input));
     inputCpy = this.convertFan203DataForCalculations(inputCpy, settings);
     inputCpy.FanShaftPower.sumSEF = inputCpy.PlaneData.inletSEF + inputCpy.PlaneData.outletSEF;
     inputCpy = this.updateInputDataForCalcs(inputCpy);
-    let results: Fan203Results = fanAddon.fan203(inputCpy);
+    let results: Fan203Results = this.fansApiService.fan203(inputCpy);
     results = this.convertFan203Results(results, settings);
     return results;
   }
@@ -23,7 +23,7 @@ export class ConvertFanAnalysisService {
     let inputCpy: Fan203Inputs = JSON.parse(JSON.stringify(input));
     inputCpy = this.convertFan203DataForCalculations(inputCpy, settings);
     inputCpy = this.updateInputDataForCalcs(inputCpy);
-    let results: PlaneResults = fanAddon.getPlaneResults(inputCpy);
+    let results: PlaneResults = this.fansApiService.getPlaneResults(inputCpy);
     results = this.convertPlaneResults(results, settings);
     return results;
   }
