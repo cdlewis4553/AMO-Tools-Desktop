@@ -15,6 +15,8 @@ export class ConvertFanAnalysisService {
     inputCpy.FanShaftPower.sumSEF = inputCpy.PlaneData.inletSEF + inputCpy.PlaneData.outletSEF;
     inputCpy = this.updateInputDataForCalcs(inputCpy);
     let results: Fan203Results = this.fansApiService.fan203(inputCpy);
+    console.log('203')
+    console.log(results);
     results = this.convertFan203Results(results, settings);
     return results;
   }
@@ -24,6 +26,8 @@ export class ConvertFanAnalysisService {
     inputCpy = this.convertFan203DataForCalculations(inputCpy, settings);
     inputCpy = this.updateInputDataForCalcs(inputCpy);
     let results: PlaneResults = this.fansApiService.getPlaneResults(inputCpy);
+    console.log('plane');
+    console.log(results);
     results = this.convertPlaneResults(results, settings);
     return results;
   }

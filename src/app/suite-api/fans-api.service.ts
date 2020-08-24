@@ -99,18 +99,17 @@ export class FansApiService {
 
   getVelocityPressureData(inputs: Plane): { pv3: number, percent75Rule: number } {
     let traversePlaneTraverseData = new Module.DoubleVector2D();
+    let doubleVector;
     inputs.traverseData.forEach(dataRow => {
-      let vector = this.returnDoubleVector(dataRow);
-      traversePlaneTraverseData.push_back(vector);
+      doubleVector = this.returnDoubleVector(dataRow);
+      traversePlaneTraverseData.push_back(doubleVector);
     });
     let traversePlaneInstance = new Module.TraversePlane(inputs.area, inputs.dryBulbTemp, inputs.barometricPressure, inputs.staticPressure, inputs.pitotTubeCoefficient, traversePlaneTraverseData);
 
     let pv3 = traversePlaneInstance.getPv3Value();
     let percent75Rule = traversePlaneInstance.get75percentRule() * 100; // Convert to percentage
     traversePlaneInstance.delete();
-    traversePlaneTraverseData.forEach(vector => {
-      vector.delete();
-    });
+    doubleVector.delete();
     traversePlaneTraverseData.delete();
     return { pv3: pv3, percent75Rule: percent75Rule };
   }
@@ -160,15 +159,14 @@ export class FansApiService {
     //TraversePlane
     //FlowTraverse
     let traversePlaneTraverseData = new Module.DoubleVector2D();
+    let doubleVector;
     input.PlaneData.FlowTraverse.traverseData.forEach(dataRow => {
-      let vector = this.returnDoubleVector(dataRow);
-      traversePlaneTraverseData.push_back(vector);
+      doubleVector = this.returnDoubleVector(dataRow);
+      traversePlaneTraverseData.push_back(doubleVector);
     });
     let traversePlaneInstance = new Module.TraversePlane(input.PlaneData.FlowTraverse.area, input.PlaneData.FlowTraverse.dryBulbTemp, input.PlaneData.FlowTraverse.barometricPressure, input.PlaneData.FlowTraverse.staticPressure, input.PlaneData.FlowTraverse.pitotTubeCoefficient, traversePlaneTraverseData);
     // Release memory
-    traversePlaneTraverseData.forEach(vector => {
-      vector.delete();
-    });
+    doubleVector.delete();
     traversePlaneTraverseData.delete();
 
     //AddlTraversePlanes
@@ -177,17 +175,15 @@ export class FansApiService {
     if (input.FanRatedInfo.traversePlanes > 1) {
       traversePlaneTraverseData = new Module.DoubleVector2D();
       let traversePlane: Plane = input.PlaneData.AddlTraversePlanes[0];
+
+      let doubleVector;
       traversePlane.traverseData.forEach(dataRow => {
-        let vector = this.returnDoubleVector(dataRow);
-        traversePlaneTraverseData.push_back(vector);
+        doubleVector = this.returnDoubleVector(dataRow);
+        traversePlaneTraverseData.push_back(doubleVector);
       });
       let traversePlaneInstance2 = new Module.TraversePlane(traversePlane.area, traversePlane.dryBulbTemp, traversePlane.barometricPressure, traversePlane.staticPressure, traversePlane.pitotTubeCoefficient, traversePlaneTraverseData);
       addlTraversePlanes.push_back(traversePlaneInstance2);
       traversePlaneInstance2.delete();
-      // Release memory
-      traversePlaneTraverseData.forEach(vector => {
-        vector.delete();
-      });
       traversePlaneTraverseData.delete();
     }
 
@@ -195,17 +191,16 @@ export class FansApiService {
     if (input.FanRatedInfo.traversePlanes == 3) {
       traversePlaneTraverseData = new Module.DoubleVector2D();
       let traversePlane: Plane = input.PlaneData.AddlTraversePlanes[1];
+      let doubleVector;
       traversePlane.traverseData.forEach(dataRow => {
-        let vector = this.returnDoubleVector(dataRow);
-        traversePlaneTraverseData.push_back(vector);
+        doubleVector = this.returnDoubleVector(dataRow);
+        traversePlaneTraverseData.push_back(doubleVector);
       });
       let traversePlaneInstance3 = new Module.TraversePlane(traversePlane.area, traversePlane.dryBulbTemp, traversePlane.barometricPressure, traversePlane.staticPressure, traversePlane.pitotTubeCoefficient, traversePlaneTraverseData);
       addlTraversePlanes.push_back(traversePlaneInstance3);
       traversePlaneInstance3.delete();
       // Release memory
-      traversePlaneTraverseData.forEach(vector => {
-        vector.delete();
-      });
+      doubleVector.delete();
       traversePlaneTraverseData.delete();
     }
 
