@@ -99,17 +99,22 @@ export class PhastResultsService {
     }
     if (resultCats.showExGas && this.checkLoss(phast.losses.exhaustGasEAF)) {
       results.totalExhaustGasEAF = this.phastService.sumExhaustGasEAF(phast.losses.exhaustGasEAF, settings);
-      
       results.grossHeatInput = results.totalInput - Math.abs(results.exothermicHeat);
     }
 
-
+    //EAF
     if (resultCats.showEnInput1 && this.checkLoss(phast.losses.energyInputEAF)) {
       let tmpForm = this.energyInputService.getFormFromLoss(phast.losses.energyInputEAF[0]);
       if (tmpForm.status === 'VALID') {
         let tmpResults = this.phastService.energyInputEAF(phast.losses.energyInputEAF[0], settings);
         results.energyInputTotalChemEnergy = tmpResults.totalChemicalEnergyInput;
         results.energyInputHeatDelivered = results.grossHeatInput - tmpResults.totalChemicalEnergyInput;
+      }
+      //issue 1872 addition
+      if (!results.totalEnergyInputEAF) {
+        results.totalEnergyInputEAF = results.grossHeatInput - results.totalInput;
+      } else {
+        results.totalOtherLoss = results.totalOtherLoss + results.grossHeatInput - results.totalInput;
       }
     }
 

@@ -4,6 +4,7 @@ import { Settings } from '../../../shared/models/settings';
 import { LossesService } from '../losses.service';
 import { LossTab } from '../../tabs';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-losses-tabs',
   templateUrl: './losses-tabs.component.html',
@@ -19,34 +20,19 @@ export class LossesTabsComponent implements OnInit {
   
   selectedTab: LossTab;
 
-  numCharge: number;
-  numFixture: number;
-  numWall: number;
-  numCooling: number;
-  numAtmosphere: number;
-  numOpening: number;
-  numLeakage: number;
-  numExtended: number;
-  numOther: number;
-  numSlag: number;
-  numExhaustGas: number;
-  numAuxPower: number;
-
-  chargeDone: boolean;
-  efficiencyDone: boolean;
-  enInput1Done: boolean;
-  enInput2Done: boolean;
-  flueGasDone: boolean;
-
   lossTabs: Array<LossTab>;
+  lossesTabSub: Subscription;
   constructor(private lossesService: LossesService) { }
 
   ngOnInit() {
     this.lossTabs = this.lossesService.lossesTabs;
-    // console.log(this.lossTabs);
-    this.lossesService.lossesTab.subscribe(val => {
+    this.lossesTabSub = this.lossesService.lossesTab.subscribe(val => {
       this.selectedTab = this.lossesService.getTab(val);
     });
+  }
+
+  ngOnDestroy(){
+    this.lossesTabSub.unsubscribe();
   }
 
   tabChange(tab: LossTab) {
