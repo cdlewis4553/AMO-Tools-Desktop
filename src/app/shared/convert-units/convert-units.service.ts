@@ -47,12 +47,15 @@ import * as _ from 'lodash';
 import * as keys from 'lodash.keys';
 import * as each from 'lodash.foreach';
 import { massPerPower } from './definitions/massPerPower';
+import { massFlux } from './definitions/massFlux';
+import { volumeFlux } from './definitions/volumeFlux';
 @Injectable()
 export class ConvertUnitsService {
   _measures = {
     length: length,
     area: area,
     mass: mass,
+    massFlux: massFlux,
     volume: volume,
     each: each,
     temperature: temperature,
@@ -75,6 +78,7 @@ export class ConvertUnitsService {
     //kineViscosity: kineViscosity,
     specificHeat: specificHeat,
     volumetricHeat: volumetricHeat,
+    volumeFlux: volumeFlux,
     specificEnergy: specificEnergy,
     density: density,
     volumetricEnergy: volumetricEnergy,

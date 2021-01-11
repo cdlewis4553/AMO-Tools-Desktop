@@ -87,6 +87,7 @@ export interface TraceData {
     name?: string,
     id?: string,
     showlegend?: boolean,
+    legendGroup?: string,
     hovertemplate?: string,
     customdata?: Array<number | string>,
     xaxis?: any,

@@ -128,6 +128,12 @@
       Survey</span>
   </div>
 </div>
+<div routerLinkActive="show-border" [routerLinkActiveOptions]="{exact:true}">
+  <span class="sidebar-item" [routerLink]="['/calculators/waste-water-list']" routerLinkActive="selected">Waste Water</span>
+  <div class="directory-item">
+    <span [routerLink]="['/calculators/state-point-analysis']" routerLinkActive="selected" class="sidebar-item">State Point Analysis Tool</span>
+  </div>
+</div>
 <!--lighting-->
 <div routerLinkActive="show-border" [routerLinkActiveOptions]="{exact:true}">
   <span class="sidebar-item" [routerLink]="['/calculators/lighting-list']" routerLinkActive="selected">Lighting</span>

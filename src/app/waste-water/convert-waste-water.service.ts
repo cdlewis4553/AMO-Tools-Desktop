@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConvertUnitsService } from '../shared/convert-units/convert-units.service';
 import { Settings } from '../shared/models/settings';
-import { ActivatedSludgeData, AeratorPerformanceData, CalculationsTableRow, WasteWater, WasteWaterData, WasteWaterResults } from '../shared/models/waste-water';
+import { ActivatedSludgeData, AeratorPerformanceData, CalculationsTableRow, StatePointAnalysisInput, StatePointAnalysisResults, WasteWater, WasteWaterData, WasteWaterResults } from '../shared/models/waste-water';
 
 @Injectable()
 export class ConvertWasteWaterService {
@@ -110,4 +110,75 @@ export class ConvertWasteWaterService {
     return row;
   }
 
+  convertStatePointAnalysisInput(input: StatePointAnalysisInput, settings: Settings) {
+    input.sviValue = this.convertUnitsService.value(input.sviValue).from('mL/g').to('L/g');
+    input.MLSS = this.convertUnitsService.value(input.MLSS).from('g/L').to('kgL');
+    if (input.sviParameter == 4) {
+      input.sludgeSettlingVelocity = this.convertUnitsService.value(input.sludgeSettlingVelocity).from('m/d').to('m/h');
+    }
+    
+    if (settings.unitsOfMeasure == 'Imperial') {
+      input.areaOfClarifier = this.convertUnitsService.value(input.areaOfClarifier).from('ft2').to('m2');
+      input.influentFlow = this.convertUnitsService.value(input.influentFlow).from('MGD').to('L/h');
+      input.rasFlow = this.convertUnitsService.value(input.rasFlow).from('MGD').to('L/h');
+    } else if (settings.unitsOfMeasure == 'Metric'){
+      input.influentFlow = this.convertUnitsService.value(input.influentFlow).from('m3/d').to('L/h');
+      input.rasFlow = this.convertUnitsService.value(input.rasFlow).from('m3/d').to('L/h');
+    }
+
+    return input;
+  }
+
+  
+  convertStatePointAnalysisExample(input: StatePointAnalysisInput) {
+    input.areaOfClarifier = this.convertUnitsService.value(input.areaOfClarifier).from('ft2').to('m2');
+    input.areaOfClarifier = this.convertUnitsService.roundVal(input.areaOfClarifier, 2);
+    
+    input.influentFlow = this.convertUnitsService.value(input.influentFlow).from('MGD').to('m3/d');
+    input.influentFlow = this.convertUnitsService.roundVal(input.influentFlow, 2);
+
+    input.rasFlow = this.convertUnitsService.value(input.rasFlow).from('MGD').to('m3/d');
+    input.rasFlow = this.convertUnitsService.roundVal(input.rasFlow, 2);
+
+    return input;
+  }
+
+  convertStatePointAnalysisResults(results: StatePointAnalysisResults, settings: Settings) {
+    if (settings.unitsOfMeasure == 'Imperial') {
+      results.TotalAreaClarifier = this.convertUnitsService.value(results.TotalAreaClarifier).from('m2').to('ft2');
+      results.SurfaceOverflow = this.convertUnitsService.value(results.SurfaceOverflow).from('L/m2h').to('gal/ft2d');
+      results.AppliedSolidsLoading = this.convertUnitsService.value(results.AppliedSolidsLoading).from('kg/m2h').to('lb/ft2d');
+
+      results.OverFlowRateY2 = this.convertUnitsService.value(results.OverFlowRateY2).from('kg/m2h').to('lb/ft2d');
+      results.UnderFlowRateY1 = this.convertUnitsService.value(results.UnderFlowRateY1).from('kg/m2h').to('lb/ft2d');
+      results.StatePointY = this.convertUnitsService.value(results.StatePointY).from('kg/m2h').to('lb/ft2d');
+      results.graphData = results.graphData.map(pair => {
+        return [
+          // pair[0] Solids Concentration: always g/L
+          pair[0],
+          // pair[1] Solids flux: kg/m2h to lb/ft2d
+          this.convertUnitsService.value(pair[1]).from('kg/m2h').to('lb/ft2d')
+        ];
+      });
+    } else if (settings.unitsOfMeasure == 'Metric'){
+      results.SurfaceOverflow = this.convertUnitsService.value(results.SurfaceOverflow).from('L/m2h').to('L/m2d');
+      results.AppliedSolidsLoading = this.convertUnitsService.value(results.AppliedSolidsLoading).from('kg/m2h').to('kg/m2d');
+
+      results.OverFlowRateY2 = this.convertUnitsService.value(results.OverFlowRateY2).from('kg/m2h').to('kg/m2d');
+      results.UnderFlowRateY1 = this.convertUnitsService.value(results.UnderFlowRateY1).from('kg/m2h').to('kg/m2d');
+      results.StatePointY = this.convertUnitsService.value(results.StatePointY).from('kg/m2h').to('kg/m2d');
+
+      results.graphData = results.graphData.map(pair => {
+        return [
+          // pair[0] Solids Concentration: always g/L
+          pair[0],
+          // pair[1] Solids flux: kg/m2h to kg/m2d
+          this.convertUnitsService.value(pair[1]).from('kg/m2h').to('kg/m2d')
+        ];
+      });
+    }
+    
+    results.RasConcentration = this.convertUnitsService.value(results.RasConcentration).from('kgL').to('mg/L');
+    return results;
+  }
 }

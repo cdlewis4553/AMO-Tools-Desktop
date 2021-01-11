@@ -18,6 +18,7 @@ import { LightingListComponent } from "../lighting/lighting-list/lighting-list.c
 import { MotorsListComponent } from "../motors/motors-list/motors-list.component";
 import { PumpsListComponent } from "../pumps/pumps-list/pumps-list.component";
 import { ProcessCoolingListComponent } from "../process-cooling/process-cooling-list/process-cooling-list.component";
+import { WasteWaterListComponent } from "../waste-water/waste-water-list/waste-water-list.component";
 
 
 
@@ -93,6 +94,10 @@ export const calculatorListRoutes: Routes = [
     //     component: SteamComponent,
     //     children: steamRoutes
     // },
+    {
+        path: 'waste-water-list',
+        component: WasteWaterListComponent
+    },
     {
         path: 'general-list',
         component: UtilitiesListComponent

@@ -15,6 +15,8 @@ import { LightingModule } from './lighting/lighting.module';
 import { RouterModule } from '@angular/router';
 import { CalculatorsListComponent } from './calculators-list/calculators-list.component';
 import { ProcessCoolingModule } from './process-cooling/process-cooling.module';
+import { WasteWaterModule } from './waste-water/waste-water.module';
+
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { ProcessCoolingModule } from './process-cooling/process-cooling.module';
     MotorsModule,
     CompressedAirModule,
     ProcessCoolingModule,
+    WasteWaterModule,
     FansModule,
     LightingModule,
     RouterModule

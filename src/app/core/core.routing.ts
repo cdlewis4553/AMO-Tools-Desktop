@@ -87,6 +87,8 @@ import { WasteWaterComponent } from '../waste-water/waste-water.component';
 import { WallComponent } from '../calculator/furnaces/wall/wall.component';
 import { FlueGasComponent } from '../calculator/furnaces/flue-gas/flue-gas.component';
 import { ChargeMaterialComponent } from '../calculator/furnaces/charge-material/charge-material.component';
+import { WasteWaterListComponent } from '../calculator/waste-water/waste-water-list/waste-water-list.component';
+import { StatePointAnalysisComponent } from '../calculator/waste-water/state-point-analysis/state-point-analysis.component';
 
 export const coreRoutes: Routes = [
   {
@@ -154,6 +156,10 @@ export const coreRoutes: Routes = [
           {
             path: 'process-cooling-list',
             component: ProcessCoolingListComponent
+          },
+          {
+            path: 'waste-water-list',
+            component: WasteWaterListComponent
           },
           {
             path: 'lighting-list',
@@ -402,7 +408,11 @@ export const coreRoutes: Routes = [
           {
             path: 'cooling-tower',
             component: CoolingTowerComponent
-          }
+          },
+          {
+            path: 'state-point-analysis',
+            component: StatePointAnalysisComponent
+          },
         ]
       }
     ]
